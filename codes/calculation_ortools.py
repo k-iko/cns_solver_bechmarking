@@ -14,18 +14,22 @@ from itertools import permutations
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+# os.chdir(os.path.dirname(os.path.abspath(__file__)))
 file_path = {}
+num_cust = ["100cust", "200cust", "400cust", "600cust", "800cust", "1000cust"]
 
-# %% make instance list
-# RESULT_DIR_PATH = 'result/100cust'
-DATA_DIR_PATH = "DATA/cust_data/400cust"
-INSTANCE_NAMES = []
-for file_name in os.listdir(DATA_DIR_PATH):
-    if file_name.endswith(".txt"):
-        name_without_extension, extension = os.path.splitext(file_name)
-        if extension == ".txt":
-            INSTANCE_NAMES.append(name_without_extension)
+# # %% make instance list
+# # RESULT_DIR_PATH = 'result/100cust'
+# DATA_DIR_PATH = "data/cust_data/100cust/total"
+# SAVE_DIR_PATH = "data/cust_data/100cust"
+# INSTANCE_NAMES = []
+# for file_name in os.listdir(DATA_DIR_PATH):
+#     print(file_name)
+#     if file_name.endswith(".txt"):
+#         name_without_extension, extension = os.path.splitext(file_name)
+#         if extension == ".txt":
+#             INSTANCE_NAMES.append(name_without_extension)
+# print(INSTANCE_NAMES)
 
 
 # %%
@@ -57,7 +61,7 @@ def readTestdata(instance_name):
     fig.show()
     # %%
     # save
-    img_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}.png")
+    img_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}.png")
     fig.write_image(img_file_path)
     return instance_df
 
@@ -79,7 +83,7 @@ def makeDistance(instance_df, instance_name):
     distance_df["KM"] = (distance_df["METERS"] / 1000).astype(int)
     distance_df.head()
     # save
-    distance_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}_dist.csv")
+    distance_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}_dist.csv")
     file_path["distance_file_path"] = distance_file_path
     distance_df = distance_df[["START", "END", "METERS"]]
     distance_df.to_csv(distance_file_path, index=False, header=False)
@@ -107,7 +111,7 @@ def makeInput(instance_df, instance_name):
 
     # %%
     # save
-    input_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}_input.csv")
+    input_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}_input.csv")
     input_df.to_csv(input_file_path, index=False)
     file_path["input_file_path"] = input_file_path
     return input_df
@@ -115,12 +119,12 @@ def makeInput(instance_df, instance_name):
 
 # make other cofig data
 def makeConfig(instance_name):
-    instance_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}.txt")
+    instance_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}.txt")
     conf_df = pd.read_csv(
         instance_file_path, skiprows=3, nrows=1, delim_whitespace=True, header=0
     ).T
     # save
-    conf_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}_conf.csv")
+    conf_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}_conf.csv")
     conf_df.to_csv(conf_file_path, header=False)
     file_path[conf_file_path] = conf_file_path
     return conf_df
@@ -334,14 +338,14 @@ def ORtools(instance_name):
     # %%
     # save
     result_file_path = os.path.join(
-        DATA_DIR_PATH, f"{instance_name}_result_ortools.csv"
+        SAVE_DIR_PATH, f"{instance_name}_result_ortools.csv"
     )
     result_df.to_csv(result_file_path, header=False)
 
     # %%
     # make route output
     output_file_path = os.path.join(
-        DATA_DIR_PATH, f"{instance_name}_output_ortools.csv"
+        SAVE_DIR_PATH, f"{instance_name}_output_ortools.csv"
     )
     with open(output_file_path, "w", newline="\n") as f:
         f.write("route#,Id\n")
@@ -408,18 +412,26 @@ def ORtools(instance_name):
 
     # %%
     # save
-    img_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}_route_ortools.png")
+    img_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}_route_ortools.png")
     fig.write_image(img_file_path)
     result = "ORtools"
     return result
 
 
 if __name__ == "__main__":
-    length = len(INSTANCE_NAMES)
-    for ins in INSTANCE_NAMES:
-        # 各dfの初期化
-        instance_df = readTestdata(ins)
-        distance_df = makeDistance(instance_df, ins)
-        input_df = makeInput(instance_df, ins)
-        conf_df = makeConfig(ins)
-        ORtools(ins)
+    for cust in num_cust:
+        DATA_DIR_PATH = f"data/cust_data/{cust}/total"
+        SAVE_DIR_PATH = f"results/simulation/{cust}"
+        INSTANCE_NAMES = []
+        for file_name in os.listdir(DATA_DIR_PATH):
+            if file_name.endswith(".txt"):
+                name_without_extension, extension = os.path.splitext(file_name)
+                if extension == ".txt":
+                    INSTANCE_NAMES.append(name_without_extension)
+        for ins in INSTANCE_NAMES:
+            # 各dfの初期化
+            instance_df = readTestdata(ins)
+            distance_df = makeDistance(instance_df, ins)
+            input_df = makeInput(instance_df, ins)
+            conf_df = makeConfig(ins)
+            ORtools(ins)
