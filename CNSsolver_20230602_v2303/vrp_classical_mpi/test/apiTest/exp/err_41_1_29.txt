@@ -1,0 +1,1 @@
+weight of time leveling penalty (aka timeLevelingPenaltyWeight) set to more than 1000000000 (timeLevelingPenaltyWeight = 10000000000.0)

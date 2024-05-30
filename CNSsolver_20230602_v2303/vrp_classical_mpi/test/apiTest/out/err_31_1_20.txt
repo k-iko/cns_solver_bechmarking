@@ -1,0 +1,1 @@
+init epower (aka e_initial) <= marginal epower (aka e_margin) (e_initial = 8.0, e_margin = 8.0)

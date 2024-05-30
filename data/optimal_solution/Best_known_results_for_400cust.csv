@@ -1,0 +1,63 @@
+﻿Instance,Vehicles,Distance,Reference,Date,Comment
+c1_4_1,40,7152.02,MBD,2005,"There are questions whether 7152.02 is valid, Several authors report 7152.06"
+c1_4_2,36,7686.38,VCGP,31-jul-12,
+c1_4_3,36,7060.67,VCGP,31-jul-12,
+c1_4_4,36,6803.24,VCGP,31-jul-12,
+c1_4_5,40,7152.02,MBD,2005,"There are questions whether 7152.02 is valid, several authors report 7152.06"
+c1_4_6,40,7153.41,MBD,2005,"There are questions whether 7153.41 is valid, several authors report 7153.45"
+c1_4_7,39,7417.92,PGDR,17-oct-07,Detailed solution by SCR
+c1_4_8,37,7347.23,BC4,05-apr-12,
+c1_4_9,36,7042.53,Q,19-oct-15,
+c1_4_10,36,6860.63,BSJ2,20-sep-07,Detailed solution by SCR
+c2_4_1,12,4116.05,MBD,2005,"There are questions whether 4116.05 is valid, several authors report 4116.14"
+c2_4_2,12,3929.89,MB,30-jun-05,"There are questions whether 3929.89 is valid, several authors report 3930.05"
+c2_4_3,11,4018.02,VCGP,31-jul-12,
+c2_4_4,11,3702.49,VCGP,31-jul-12,
+c2_4_5,12,3938.69,BSJ2,20-sep-07,Detailed solution by SCR
+c2_4_6,12,3875.94,MB,16-sep-03,Detailed solution by SCR
+c2_4_7,12,3894.13,MBD,2005,"There are questions whether 3894.13 is valid, several authors report 3894.16"
+c2_4_8,11,4233.2,CAINIAO,Apr-19,
+c2_4_9,12,3864.68,MB2,18-jul-12,"There are questions whether 3864.68 is valid, several authors report  3865.65"
+c2_4_10,11,3825.67,SCR,08-sep-18,
+r1_4_1,40,10372.31,NBD,2009,Detailed solution by BC4
+r1_4_2,36,8898.15,"CAINIAO
+SCR",Oct-18,Tie
+r1_4_3,36,7808.34,Q,08-feb-18,
+r1_4_4,36,7282.78,VCGP,31-jul-12,
+r1_4_5,36,9222.96,SCR,19-dec-21,
+r1_4_6,36,8358.69,Q,04-dec-17,
+r1_4_7,36,7616.15,Q,04-dec-17,
+r1_4_8,36,7257.28,Q,07-sep-17,
+r1_4_9,36,8694.78,SCR,Oct-18,
+r1_4_10,36,8094.1,Q,09-dec-16,
+r2_4_1,8,9210.15,NBD,2009,Detailed solution by BC4
+r2_4_2,8,7606.75,BSJ2,20-sep-07,Detailed solution by SCR
+r2_4_3,8,5911.07,VCGP,31-jul-12,
+r2_4_4,8,4241.47,NBD,2009,Detailed solution provided by BC4
+r2_4_5,8,7127.83,"CAINIAO
+SCR",Oct-18,Tie
+r2_4_6,8,6122.6,BC4,05-apr-12,
+r2_4_7,8,5018.53,BC4,05-apr-12,
+r2_4_8,8,4015.6,NBD,2009,Detailed solution by SCR
+r2_4_9,8,6400.1,BC4,05-apr-12,
+r2_4_10,8,5773.17,SCR,19-dec-21,
+rc1_4_1,36,8571.32,SCR,19-dec-21,
+rc1_4_2,36,7892.52,EOE,01-dec-16,
+rc1_4_3,36,7533.05,Q,03-oct-17,
+rc1_4_4,36,7308.55,Q,22-jun-16,
+rc1_4_5,36,8172.64,Q,17-oct-17,
+rc1_4_6,36,8164.98,EOE,01-dec-16,
+rc1_4_7,36,7948.51,EOE,01-dec-16,
+rc1_4_8,36,7772.57,SCR,13-jul-18,MB2 report 7760.23 but there are questions whether is valid.
+rc1_4_9,36,7733.35,CAINIAO,Oct-18,
+rc1_4_10,36,7596.04,EOE,01-dec-16,
+rc2_4_1,11,6682.37,NBD,2009,Detailed solution by BC4
+rc2_4_2,9,6180.62,BC4,05-apr-12,
+rc2_4_3,8,4930.84,NBD,2009,Detailed solution by BC4
+rc2_4_4,8,3631.01,NBD,2009,Detailed solution by VCGP
+rc2_4_5,8,6706.44,SCR,19-dec-21,
+rc2_4_6,8,5766.61,NBD,2009,Detailed solution by BC4
+rc2_4_7,8,5334.72,Q,25-sep-17,
+rc2_4_8,8,4790.14,SCR,19-dec-21,
+rc2_4_9,8,4551.11,Q,15-nov-17,
+rc2_4_10,8,4278.61,VCGP,31-jul-12,

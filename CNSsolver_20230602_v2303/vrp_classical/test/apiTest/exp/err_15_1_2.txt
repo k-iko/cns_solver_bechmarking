@@ -1,0 +1,1 @@
+delivery skill (aka opskill) set to less than 0.0 (opskill = -1.0)

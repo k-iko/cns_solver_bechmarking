@@ -1,0 +1,1 @@
+max loading weight of vehicles (aka cap) set to less than 0 (cap = -1)

@@ -1,0 +1,1 @@
+empirical cost for optimization metric (aka opt_x_weight) set to less than 0.0 (opt_x_weight = -1.0)

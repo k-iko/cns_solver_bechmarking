@@ -1,0 +1,1 @@
+max loading size of vehicles (aka cap2) set to less than 0 (cap2 = -1)

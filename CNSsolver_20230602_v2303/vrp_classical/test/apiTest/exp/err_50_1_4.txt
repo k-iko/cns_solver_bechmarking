@@ -1,0 +1,1 @@
+setting break (aka takebreak) must be set to break customer object (custno = e1)

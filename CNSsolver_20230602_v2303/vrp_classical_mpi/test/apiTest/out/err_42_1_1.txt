@@ -1,0 +1,1 @@
+type of time penalty (aka timePenaltyType) set to other than "soft" or "hard" (timePenaltyType = normal)

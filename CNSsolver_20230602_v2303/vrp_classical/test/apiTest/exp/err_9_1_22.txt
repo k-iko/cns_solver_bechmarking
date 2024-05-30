@@ -1,0 +1,1 @@
+same distance tables (aka dtable) exist

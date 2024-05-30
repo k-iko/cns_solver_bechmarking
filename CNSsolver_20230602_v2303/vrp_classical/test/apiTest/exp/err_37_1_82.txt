@@ -1,0 +1,1 @@
+Usage: br_int must be greater than or equal to 0.0 (break_interval = -1.0)

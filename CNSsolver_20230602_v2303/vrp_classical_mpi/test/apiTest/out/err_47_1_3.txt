@@ -1,0 +1,1 @@
+AE margin of distance-leveling (aka avedist_ae) set to less than 0.0 (avedist_ae = -1.0)

@@ -1,0 +1,1 @@
+same parking time (aka parkt_open) must be set to the same spot (aka spotid) (spotid = 1)

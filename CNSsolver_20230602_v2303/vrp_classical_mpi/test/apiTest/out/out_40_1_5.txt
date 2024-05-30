@@ -1,0 +1,284 @@
+----------------------------------------------------------------
+vehno:4
+cap:199.04119335901817
+cap2:207.72682379859526
+route [
+	[custno:0:	spotid:0:	spotno:0:	y:35.19807886:	x:137.0112822:	dem:0.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.0:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[0]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765827.21388889:	due_fs:8765812.78611111:	deny_unass:False	]
+	[custno:160:	spotid:8:	spotno:63:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 9:47:37:	due:2000/1/1 19:53:6:	servt:0.20440500326469901:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[160]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-9.420277777777779:	due_fs:0.6711111111111111:	deny_unass:False	]
+	[custno:14:	spotid:3:	spotno:23:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 11:39:30:	due:2000/1/1 20:48:6:	servt:0.1692785577599614:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[14]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-7.555555555555555:	due_fs:1.5877777777777777:	deny_unass:False	]
+	[custno:201:	spotid:41:	spotno:36:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 17:14:51:	due:2000/1/1 20:17:13:	servt:0.482560918351145:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[201]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-1.966388888888889:	due_fs:1.0730555555555557:	deny_unass:False	]
+	[custno:96:	spotid:43:	spotno:38:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 17:17:55:	due:2000/1/2 0:50:37:	servt:0.6297512889877551:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[96]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-1.9152777777777779:	due_fs:5.629722222222222:	deny_unass:False	]
+	[custno:233:	spotid:23:	spotno:16:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 17:27:10:	due:2000/1/2 0:50:42:	servt:0.668768038303446:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[233]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-1.761111111111111:	due_fs:5.631111111111111:	deny_unass:False	]
+	[custno:270:	spotid:9:	spotno:64:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 8:16:45:	due:2000/1/1 13:52:10:	servt:0.19423601391629264:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[270]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-10.934722222222222:	due_fs:-5.344444444444444:	deny_unass:False	]
+	[custno:98:	spotid:4:	spotno:34:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 9:56:29:	due:2000/1/2 1:43:17:	servt:0.6621642599282712:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[98]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-9.2725:	due_fs:6.5075:	deny_unass:False	]
+	[custno:235:	spotid:21:	spotno:14:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 18:22:54:	due:2000/1/2 2:56:44:	servt:0.5361109722520366:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[235]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-0.8322222222222222:	due_fs:7.7316666666666665:	deny_unass:False	]
+	[custno:169:	spotid:5:	spotno:45:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 19:10:4:	due:2000/1/1 20:48:35:	servt:0.7224769207533974:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[169]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-0.04611111111111111:	due_fs:1.5958333333333334:	deny_unass:False	]
+	[custno:190:	spotid:20:	spotno:13:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 15:55:20:	due:2000/1/2 4:12:9:	servt:0.4092075537827211:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[190]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-3.2916666666666665:	due_fs:8.988611111111112:	deny_unass:False	]
+	[custno:24:	spotid:57:	spotno:53:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 10:26:9:	due:2000/1/2 7:12:1:	servt:0.8597510246981079:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[24]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8.778055555555556:	due_fs:11.98638888888889:	deny_unass:False	]
+	[custno:30:	spotid:35:	spotno:29:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 8:31:48:	due:2000/1/1 13:29:57:	servt:0.916661767657201:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[30]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-10.68388888888889:	due_fs:-5.714722222222222:	deny_unass:False	]
+	[custno:139:	spotid:46:	spotno:41:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 17:23:21:	due:2000/1/2 3:36:47:	servt:0.49435564762855705:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[139]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-1.8247222222222221:	due_fs:8.399166666666666:	deny_unass:False	]
+	[custno:204:	spotid:51:	spotno:47:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 16:9:1:	due:2000/1/2 1:22:46:	servt:0.8513500940772499:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[204]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-3.0636111111111113:	due_fs:6.165555555555556:	deny_unass:False	]
+	[custno:85:	spotid:53:	spotno:49:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 17:37:5:	due:2000/1/2 4:25:29:	servt:0.242248395966572:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[85]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-1.5958333333333334:	due_fs:9.210833333333333:	deny_unass:False	]
+	[custno:6:	spotid:61:	spotno:58:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.845553413317838:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[6]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765827.21388889:	due_fs:8765812.78611111:	deny_unass:False	]
+]
+totalcost:90682.45458040772
+totalcost_wolast:85537.73936418522
+arr:[0.0, 0.14624411864203823, 0.5840216532788064, 1.4882580844356985, 2.3549834397112415, 3.22620024879801, 4.38127416146664, 4.946932920915996, 5.845240723278971, 7.1626820898909855, 8.316658532333937, 9.639683262564464, 11.733126994956681, 14.203059837044798, 14.80437846352919, 17.108260680221665, 18.555812794942348]
+load_onbrd:4500.0
+load_onbrd2:4500.0
+load_pickup:0.0
+load_pickup2:0.0
+opskill:1.0
+drskill:1.0
+rtid:
+e_capacity:10.0
+e_initial:0.0
+e_cost:1.0
+e_margin:0.0
+rem_batt:[0.0, -8.484304326487912, -13.432066908854532, -20.187790917440594, -23.079584442099, -26.47380586684523, -33.0333520657289, -40.50944727649611, -45.4062279262167, -53.14294155597699, -58.93834819416175, -68.5839025954087, -69.15314751715448, -74.40945460638541, -83.65301017189397, -85.53773936418524, -90.68245458040774]
+chg_batt:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+chg_batt_dict:{}
+slack_t:[-17.447849217178902, -17.447849217178902, -17.447849217178902, -17.447849217178902, -17.447849217178902, -17.447849217178902, -17.447849217178902, -17.447849217178902, -17.447849217178902, -17.447849217178902, -17.447849217178902, -17.447849217178902, -17.447849217178902, -8.638822907973633, -8.638822907973633, -7.897427346888332, 8765794.230298316]
+time_pen:67.75990866204356
+load_pen:4300.9588066409815
+load_pen2:4292.273176201405
+vtype:3
+etype:common
+enddepot [
+custno:6:	spotid:61:	spotno:58:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.845553413317838:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[6]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765827.21388889:	due_fs:8765812.78611111:	deny_unass:False:	]
+]
+startoptime:2000/1/1 19:12:50
+endoptime:2000/1/2 1:30:20
+direct_flag:False
+starthour:0.0
+endhour:6.291666666666667
+delay_arr:[]
+delay_totalcost:0.0
+delay_totalcost_wolast:0.0
+delay_rem_batt:[]
+delay_chg_batt:[]
+delay_chg_batt_dict:{}
+delay_slack_t:[]
+maxvisit:0
+maxrotate:0
+depotservt:0.0
+rmpriority:0
+takebreak:[]
+reserved_v_flag:False
+remdist:[90682.45458040772, 82198.15025391981, 77250.3876715532, 70494.66366296714, 67602.87013830873, 64208.64871356251, 57649.10251467884, 50173.007303911625, 45276.226654191036, 37539.51302443075, 31744.10638624599, 22098.55198499903, 21529.30706325325, 16272.999974022323, 7029.444408513771, 5144.715216222503, 6.366462912410498e-12]
+st:[0.0, 0.14624411864203823, 0.5840216532788064, 1.4882580844356985, 2.3549834397112415, 3.22620024879801, 4.38127416146664, 4.946932920915996, 5.845240723278971, 7.1626820898909855, 8.316658532333937, 9.639683262564464, 11.733126994956681, 14.203059837044798, 14.80437846352919, 17.108260680221665, 18.555812794942348]
+lv:[0.0, 0.35064912190673725, 0.7533002110387678, 1.9708190027868435, 2.9847347286989967, 3.894968287101456, 4.575510175382933, 5.609097180844268, 6.381351695531008, 7.885159010644383, 8.725866086116659, 10.499434287262572, 12.649788762613882, 14.697415484673355, 15.655728557606439, 17.35050907618824, 18.555812794942348]
+
+----------------------------------------------------------------
+vehno:2
+cap:64.3568909213904
+cap2:63.713030507499326
+route [
+	[custno:0:	spotid:0:	spotno:0:	y:35.19807886:	x:137.0112822:	dem:0.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.0:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[0]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765827.21388889:	due_fs:8765812.78611111:	deny_unass:False	]
+	[custno:344:	spotid:24:	spotno:17:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 12:0:6:	due:2000/1/2 6:24:33:	servt:0.8521482211194845:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[344]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-7.2122222222222225:	due_fs:11.195277777777777:	deny_unass:False	]
+	[custno:155:	spotid:25:	spotno:18:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 13:16:28:	due:2000/1/1 21:13:31:	servt:0.6760216261963433:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[155]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-5.939444444444445:	due_fs:2.011388888888889:	deny_unass:False	]
+	[custno:11:	spotid:29:	spotno:22:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 9:59:39:	due:2000/1/1 20:45:22:	servt:0.12301125512963185:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[11]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-9.219722222222222:	due_fs:1.5422222222222222:	deny_unass:False	]
+	[custno:225:	spotid:45:	spotno:40:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 8:39:42:	due:2000/1/1 13:26:20:	servt:0.6406052205604486:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[225]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-10.552222222222222:	due_fs:-5.775:	deny_unass:False	]
+	[custno:100:	spotid:1:	spotno:1:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 19:18:23:	due:2000/1/2 3:8:30:	servt:0.055764819722058934:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[100]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:0.0925:	due_fs:7.927777777777778:	deny_unass:False	]
+	[custno:47:	spotid:26:	spotno:19:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 14:8:5:	due:2000/1/2 2:6:26:	servt:0.25436541830093873:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[47]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-5.079166666666667:	due_fs:6.8933333333333335:	deny_unass:False	]
+	[custno:23:	spotid:32:	spotno:26:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 9:24:45:	due:2000/1/1 13:23:32:	servt:0.940897727010217:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[23]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-9.801388888888889:	due_fs:-5.821666666666666:	deny_unass:False	]
+	[custno:191:	spotid:30:	spotno:24:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 10:43:13:	due:2000/1/2 3:11:50:	servt:0.10553388051518198:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[191]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8.493611111111111:	due_fs:7.983333333333333:	deny_unass:False	]
+	[custno:55:	spotid:60:	spotno:57:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 20:4:10:	due:2000/1/1 22:56:55:	servt:0.7990054936008566:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[55]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:0.8555555555555555:	due_fs:3.734722222222222:	deny_unass:False	]
+	[custno:28:	spotid:58:	spotno:54:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 15:10:5:	due:2000/1/1 23:7:33:	servt:0.9365763461106087:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[28]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-4.045833333333333:	due_fs:3.9119444444444444:	deny_unass:False	]
+	[custno:153:	spotid:56:	spotno:52:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 11:16:35:	due:2000/1/2 2:19:30:	servt:0.7854337799902087:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[153]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-7.9375:	due_fs:7.111111111111111:	deny_unass:False	]
+	[custno:250:	spotid:55:	spotno:51:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 20:21:26:	due:2000/1/2 6:46:4:	servt:0.05098496083963122:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[250]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:1.1433333333333333:	due_fs:11.553888888888888:	deny_unass:False	]
+	[custno:197:	spotid:33:	spotno:27:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 14:54:44:	due:2000/1/2 4:53:33:	servt:0.7029742391717693:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[197]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-4.301666666666667:	due_fs:9.678611111111111:	deny_unass:False	]
+	[custno:350:	spotid:18:	spotno:10:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 9:9:14:	due:2000/1/1 18:17:59:	servt:0.7652304403336078:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[350]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-10.06:	due_fs:-0.9141666666666667:	deny_unass:False	]
+	[custno:216:	spotid:44:	spotno:39:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 11:9:44:	due:2000/1/2 6:22:39:	servt:0.6117524635284336:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[216]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8.051666666666666:	due_fs:11.163611111111111:	deny_unass:False	]
+	[custno:272:	spotid:59:	spotno:55:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 13:37:12:	due:2000/1/2 0:18:47:	servt:0.6005407204798883:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[272]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-5.5938888888888885:	due_fs:5.099166666666667:	deny_unass:False	]
+	[custno:18:	spotid:11:	spotno:3:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/2 2:43:15:	due:2000/1/2 2:56:35:	servt:0.39001806192696054:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[18]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:7.506944444444445:	due_fs:7.729166666666667:	deny_unass:False	]
+	[custno:147:	spotid:62:	spotno:59:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.12072609894688537:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[147]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765827.21388889:	due_fs:8765812.78611111:	deny_unass:False	]
+]
+totalcost:97151.08528333332
+totalcost_wolast:88414.50058140127
+arr:[-3.3730555555555557, -3.166425489084988, -2.2831513202760623, -1.1495844366316825, -0.977749829207406, 0.20488453332782386, 0.5789133383375085, 1.6731667178008094, 2.91193276150815, 3.187458001123983, 4.932834749342844, 7.565106141716553, 8.751376491917286, 9.536824195353605, 10.5810779757132, 12.097073220310433, 15.908889846816432, 16.658587959452742, 25.54318956301299]
+load_onbrd:5100.0
+load_onbrd2:5100.0
+load_pickup:0.0
+load_pickup2:0.0
+opskill:1.0
+drskill:1.0
+rtid:
+e_capacity:10.0
+e_initial:0.0
+e_cost:1.0
+e_margin:0.0
+rem_batt:[0.0, -3.534071277822074, -7.697208854458561, -15.560190976825634, -24.882350431569975, -33.99117882307926, -35.38878117231517, -36.70863204975297, -37.73774582760689, -39.16928786264428, -47.825357350910366, -56.664785280592184, -62.42412394740797, -66.32689748550786, -71.46130206032919, -80.0401878205498, -80.38316928078142, -88.41450058140126, -97.1510852833333]
+chg_batt:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+chg_batt_dict:{}
+slack_t:[-11.495244642379866, -11.495244642379866, -11.495244642379866, -11.495244642379866, -11.495244642379866, -11.495244642379866, -11.495244642379866, -11.495244642379866, -11.495244642379866, -11.495244642379866, -11.495244642379866, -11.495244642379866, -11.495244642379866, -11.495244642379866, -11.495244642379866, -10.809723180149765, -10.809723180149765, -8.929421292786074, 8765787.242921548]
+time_pen:62.27162078940305
+load_pen:5035.64310907861
+load_pen2:5036.2869694925
+vtype:2
+etype:common
+enddepot [
+custno:147:	spotid:62:	spotno:59:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.12072609894688537:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[147]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765827.21388889:	due_fs:8765812.78611111:	deny_unass:False:	]
+]
+startoptime:2000/1/1 15:50:27
+endoptime:2000/1/2 4:25:13
+direct_flag:False
+starthour:-3.3730555555555557
+endhour:9.206388888888888
+delay_arr:[]
+delay_totalcost:0.0
+delay_totalcost_wolast:0.0
+delay_rem_batt:[]
+delay_chg_batt:[]
+delay_chg_batt_dict:{}
+delay_slack_t:[]
+maxvisit:0
+maxrotate:0
+depotservt:0.0
+rmpriority:0
+takebreak:[]
+reserved_v_flag:False
+remdist:[97151.08528333332, 93617.01400551124, 89453.87642887476, 81590.89430650769, 72268.73485176335, 63159.90646025407, 61762.30411101816, 60442.45323358036, 59413.33945572644, 57981.79742068904, 49325.72793242296, 40486.30000274114, 34726.961335925356, 30824.18779782547, 25689.78322300413, 17110.897462783512, 16767.916002551898, 8736.58470193206, 1.6370904631912708e-11]
+st:[-3.3730555555555557, -3.166425489084988, -2.2831513202760623, -1.1495844366316825, -0.977749829207406, 0.20488453332782386, 0.5789133383375085, 1.6731667178008094, 2.91193276150815, 3.187458001123983, 4.932834749342844, 7.565106141716553, 8.751376491917286, 9.536824195353605, 10.5810779757132, 12.097073220310433, 15.908889846816432, 16.658587959452742, 25.54318956301299]
+lv:[-3.3730555555555557, -2.3142772679655033, -1.607129694079719, -1.0265731815020507, -0.3371446086469575, 0.2606493530498828, 0.8332787566384472, 2.614064444811026, 3.017466642023332, 3.9864634947248394, 5.869411095453453, 8.350539921706762, 8.802361452756918, 10.239798434525374, 11.346308416046808, 12.708825683838867, 16.50943056729632, 17.0486060213797, 25.54318956301299]
+
+----------------------------------------------------------------
+vehno:1
+cap:66.5088748578722
+cap2:291.3317854061321
+route [
+	[custno:0:	spotid:0:	spotno:0:	y:35.19807886:	x:137.0112822:	dem:0.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.0:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[0]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765827.21388889:	due_fs:8765812.78611111:	deny_unass:False	]
+	[custno:2:	spotid:37:	spotno:31:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 10:26:28:	due:2000/1/1 18:42:22:	servt:0.6035564818602617:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[2]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8.772777777777778:	due_fs:-0.5077777777777778:	deny_unass:False	]
+	[custno:304:	spotid:15:	spotno:7:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 12:10:27:	due:2000/1/1 13:31:30:	servt:0.6129826033912406:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[304]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-7.039722222222222:	due_fs:-5.688888888888889:	deny_unass:False	]
+	[custno:65:	spotid:39:	spotno:33:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 9:23:36:	due:2000/1/1 10:22:20:	servt:0.3102113098188556:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[65]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-9.820555555555556:	due_fs:-8.841666666666667:	deny_unass:False	]
+	[custno:251:	spotid:40:	spotno:35:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 9:5:52:	due:2000/1/1 10:50:29:	servt:0.3336182030850521:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[251]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-10.116111111111111:	due_fs:-8.3725:	deny_unass:False	]
+	[custno:330:	spotid:17:	spotno:9:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 16:11:0:	due:2000/1/2 2:42:0:	servt:0.8624160593608678:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[330]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-3.0305555555555554:	due_fs:7.486111111111111:	deny_unass:False	]
+	[custno:54:	spotid:42:	spotno:37:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 13:12:8:	due:2000/1/2 1:57:33:	servt:0.12273325806900472:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[54]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-6.011666666666667:	due_fs:6.745277777777778:	deny_unass:False	]
+	[custno:265:	spotid:54:	spotno:50:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 11:25:57:	due:2000/1/1 18:52:24:	servt:0.2939250184456361:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[265]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-7.7813888888888885:	due_fs:-0.34055555555555556:	deny_unass:False	]
+	[custno:20:	spotid:6:	spotno:56:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 15:34:49:	due:2000/1/2 6:32:26:	servt:0.9312352690433634:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[20]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-3.633611111111111:	due_fs:11.326666666666666:	deny_unass:False	]
+	[custno:340:	spotid:16:	spotno:8:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 9:22:56:	due:2000/1/1 13:51:4:	servt:0.8038144595938136:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[340]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-9.831666666666667:	due_fs:-5.362777777777778:	deny_unass:False	]
+	[custno:136:	spotid:10:	spotno:2:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 12:35:18:	due:2000/1/2 0:46:33:	servt:0.08488742805803305:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[136]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-6.625555555555556:	due_fs:5.561944444444444:	deny_unass:False	]
+	[custno:189:	spotid:47:	spotno:42:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 12:42:33:	due:2000/1/1 21:32:50:	servt:0.5574711818056289:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[189]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-6.504722222222222:	due_fs:2.3333333333333335:	deny_unass:False	]
+	[custno:110:	spotid:48:	spotno:43:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 15:3:19:	due:2000/1/1 21:1:23:	servt:0.11313743847404746:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[110]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-4.158611111111111:	due_fs:1.8091666666666666:	deny_unass:False	]
+	[custno:247:	spotid:31:	spotno:25:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/2 1:52:50:	due:2000/1/2 5:19:0:	servt:0.4508795379328175:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[247]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:6.666666666666667:	due_fs:10.102777777777778:	deny_unass:False	]
+	[custno:146:	spotid:50:	spotno:46:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 10:56:5:	due:2000/1/2 5:19:19:	servt:0.8681904502112975:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[146]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8.279166666666667:	due_fs:10.108055555555556:	deny_unass:False	]
+	[custno:131:	spotid:14:	spotno:6:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 12:30:19:	due:2000/1/2 3:31:11:	servt:0.8209789658064056:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[131]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-6.708611111111111:	due_fs:8.305833333333334:	deny_unass:False	]
+	[custno:195:	spotid:38:	spotno:32:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 9:44:22:	due:2000/1/2 6:40:31:	servt:0.006331936490295065:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[195]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-9.474444444444444:	due_fs:11.461388888888889:	deny_unass:False	]
+	[custno:115:	spotid:7:	spotno:62:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 21:48:58:	due:2000/1/2 7:11:44:	servt:0.883353811101853:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[115]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:2.602222222222222:	due_fs:11.981666666666667:	deny_unass:False	]
+	[custno:306:	spotid:49:	spotno:44:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 14:48:50:	due:2000/1/1 15:21:10:	servt:0.8268433138374075:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[306]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-4.4:	due_fs:-3.861111111111111:	deny_unass:False	]
+	[custno:119:	spotid:36:	spotno:30:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/2 4:15:56:	due:2000/1/2 5:19:28:	servt:0.7247687476810994:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[119]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:9.051666666666666:	due_fs:10.110555555555555:	deny_unass:False	]
+	[custno:316:	spotid:19:	spotno:11:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 13:46:58:	due:2000/1/2 4:55:26:	servt:0.51378429702164:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[316]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-5.431111111111111:	due_fs:9.71:	deny_unass:False	]
+	[custno:234:	spotid:63:	spotno:60:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.06835721487645396:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[234]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765827.21388889:	due_fs:8765812.78611111:	deny_unass:False	]
+]
+totalcost:80167.88600581906
+totalcost_wolast:71372.65932887627
+arr:[-8.726944444444445, -4.236853817574865, -3.5268049527963887, -2.466332051106324, -0.8926993461020116, 0.3588884678013249, 1.7169536908693097, 2.050393830735369, 2.391798878576544, 3.529579572245166, 5.149908877054146, 5.5106702499131135, 6.381206510460954, 7.058692739990192, 7.905761081011018, 9.51274548563637, 10.358737201325015, 10.862625344867887, 12.259826852715081, 15.862680374705208, 16.997409842458637, 27.064593719131494]
+load_onbrd:6000.0
+load_onbrd2:6000.0
+load_pickup:0.0
+load_pickup2:0.0
+opskill:1.0
+drskill:1.0
+rtid:
+e_capacity:10.0
+e_initial:0.0
+e_cost:1.0
+e_margin:0.0
+rem_batt:[0.0, -7.405113425074651, -9.506035911864467, -10.56924137096205, -14.575262740939205, -24.153414798291372, -24.154810407087176, -25.222910901959445, -27.947600524093595, -29.66376657408907, -32.50421251495498, -37.18533778614326, -41.81302254604848, -48.30351430784599, -55.69189417932195, -56.1588506569139, -57.309980629074325, -58.91841348158041, -61.406754895387884, -69.57337851007847, -71.37265932887627, -80.16788600581907]
+chg_batt:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+chg_batt_dict:{}
+slack_t:[-16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -16.120937963826194, -7.287409842458636, -7.287409842458636, 8765785.721517392]
+time_pen:90.37715897688557
+load_pen:5933.491125142128
+load_pen2:5708.668214593868
+vtype:1
+etype:common
+enddepot [
+custno:234:	spotid:63:	spotno:60:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.06835721487645396:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[234]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765827.21388889:	due_fs:8765812.78611111:	deny_unass:False:	]
+]
+startoptime:2000/1/1 10:29:13
+endoptime:2000/1/1 21:19:7
+direct_flag:False
+starthour:-8.726944444444445
+endhour:2.104722222222222
+delay_arr:[]
+delay_totalcost:0.0
+delay_totalcost_wolast:0.0
+delay_rem_batt:[]
+delay_chg_batt:[]
+delay_chg_batt_dict:{}
+delay_slack_t:[]
+maxvisit:0
+maxrotate:0
+depotservt:0.0
+rmpriority:0
+takebreak:[]
+reserved_v_flag:False
+remdist:[80167.88600581906, 72762.77258074441, 70661.85009395459, 69598.644634857, 65592.62326487985, 56014.471207527684, 56013.075598731884, 54944.975103859615, 52220.28548172546, 50504.11943172999, 47663.67349086408, 42982.5482196758, 38354.863459770575, 31864.371697973063, 24475.9918264971, 24009.035348905145, 22857.90537674472, 21249.472524238638, 18761.131110431164, 10594.50749574058, 8795.226676942784, -1.6370904631912708e-11]
+st:[-8.726944444444445, -4.236853817574865, -3.5268049527963887, -2.466332051106324, -0.8926993461020116, 0.3588884678013249, 1.7169536908693097, 2.050393830735369, 2.391798878576544, 3.529579572245166, 5.149908877054146, 5.5106702499131135, 6.381206510460954, 7.058692739990192, 7.905761081011018, 9.51274548563637, 10.358737201325015, 10.862625344867887, 12.259826852715081, 15.862680374705208, 16.997409842458637, 27.064593719131494]
+lv:[-8.726944444444445, -3.633297335714603, -2.913822349405148, -2.1561207412874683, -0.5590811430169595, 1.2213045271621927, 1.8396869489383145, 2.344318849181005, 3.3230341476199072, 4.33339403183898, 5.234796305112178, 6.068141431718742, 6.494343948935001, 7.50957227792301, 8.773951531222316, 10.333724451442775, 10.36506913781531, 11.74597915596974, 13.086670166552489, 16.587449122386307, 17.511194139480278, 27.064593719131494]
+
+----------------------------------------------------------------
+vehno:0
+cap:86.55673001437685
+cap2:21.10664529034927
+route [
+	[custno:0:	spotid:0:	spotno:0:	y:35.19807886:	x:137.0112822:	dem:0.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.0:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[0]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765827.21388889:	due_fs:8765812.78611111:	deny_unass:False	]
+	[custno:182:	spotid:34:	spotno:28:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 23:9:51:	due:2000/1/2 6:14:23:	servt:0.05588034183432866:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[182]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:3.950277777777778:	due_fs:11.025833333333333:	deny_unass:False	]
+	[custno:339:	spotid:28:	spotno:21:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 13:8:38:	due:2000/1/2 3:32:47:	servt:0.45568128458069634:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[339]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-6.07:	due_fs:8.3325:	deny_unass:False	]
+	[custno:91:	spotid:27:	spotno:20:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 20:56:0:	due:2000/1/2 5:49:19:	servt:0.5643268343059806:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[91]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:1.7194444444444446:	due_fs:10.608055555555556:	deny_unass:False	]
+	[custno:66:	spotid:13:	spotno:5:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 9:12:30:	due:2000/1/2 1:52:7:	servt:0.3802609506536113:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[66]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-10.005555555555556:	due_fs:6.654722222222222:	deny_unass:False	]
+	[custno:71:	spotid:52:	spotno:48:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 15:2:33:	due:2000/1/1 15:44:0:	servt:0.7673493107058225:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[71]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-4.171388888888889:	due_fs:-3.4805555555555556:	deny_unass:False	]
+	[custno:141:	spotid:2:	spotno:12:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 12:49:47:	due:2000/1/1 15:28:4:	servt:0.0323204820590024:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[141]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-6.384166666666666:	due_fs:-3.746111111111111:	deny_unass:False	]
+	[custno:29:	spotid:22:	spotno:15:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/1 18:14:19:	due:2000/1/1 20:36:18:	servt:0.4599593331274518:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[29]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-0.9752777777777778:	due_fs:1.3911111111111112:	deny_unass:False	]
+	[custno:193:	spotid:12:	spotno:4:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:300.0:	ready:2000/1/2 2:44:12:	due:2000/1/2 7:5:8:	servt:0.42342978847198753:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[193]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:7.522777777777778:	due_fs:11.871666666666666:	deny_unass:False	]
+	[custno:321:	spotid:64:	spotno:61:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.8764783825017791:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[321]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765827.21388889:	due_fs:8765812.78611111:	deny_unass:False	]
+]
+totalcost:38312.199192005595
+totalcost_wolast:37384.01446279365
+arr:[8.514444444444445, 8.69271530736618, 9.486360673418016, 10.420700761267398, 11.348709674288706, 11.951584558888268, 13.611939580138403, 14.244593441799982, 16.776378594421384, 21.853278568348674]
+load_onbrd:2400.0
+load_onbrd2:2400.0
+load_pickup:0.0
+load_pickup2:0.0
+opskill:1.0
+drskill:1.0
+rtid:
+e_capacity:10.0
+e_initial:0.0
+e_cost:1.0
+e_margin:0.0
+rem_batt:[0.0, -0.9465364048022662, -5.328129951450357, -15.116505929203464, -20.81225029705513, -21.975638891796976, -24.81892041283041, -28.00380526989995, -37.38401446279366, -38.3121991920056]
+chg_batt:[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+chg_batt_dict:{}
+slack_t:[-17.358050691249513, -17.358050691249513, -17.358050691249513, -17.358050691249513, -17.358050691249513, -17.358050691249513, -17.358050691249513, -12.85348233068887, -4.904711927754718, 8765790.932832543]
+time_pen:69.09840064685899
+load_pen:2313.4432699856234
+load_pen2:2378.893354709651
+vtype:7
+etype:common
+enddepot [
+custno:321:	spotid:64:	spotno:61:	y:35.19807886:	x:137.0112822:	dem:300.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.8764783825017791:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[321]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765827.21388889:	due_fs:8765812.78611111:	deny_unass:False:	]
+]
+startoptime:2000/1/2 3:43:42
+endoptime:2000/1/2 4:21:54
+direct_flag:False
+starthour:8.514444444444445
+endhour:9.151111111111112
+delay_arr:[]
+delay_totalcost:0.0
+delay_totalcost_wolast:0.0
+delay_rem_batt:[]
+delay_chg_batt:[]
+delay_chg_batt_dict:{}
+delay_slack_t:[]
+maxvisit:0
+maxrotate:0
+depotservt:0.0
+rmpriority:0
+takebreak:[]
+reserved_v_flag:False
+remdist:[38312.199192005595, 37365.66278720333, 32984.06924055524, 23195.69326280213, 17499.948894950467, 16336.56030020862, 13493.278779175187, 10308.393922105646, 928.1847292119382, -3.410605131648481e-12]
+st:[8.514444444444445, 8.69271530736618, 9.486360673418016, 10.420700761267398, 11.348709674288706, 11.951584558888268, 13.611939580138403, 14.244593441799982, 16.776378594421384, 21.853278568348674]
+lv:[8.514444444444445, 8.748595649200508, 9.942041957998713, 10.985027595573378, 11.728970624942317, 12.71893386959409, 13.644260062197406, 14.704552774927434, 17.199808382893373, 21.853278568348674]
+

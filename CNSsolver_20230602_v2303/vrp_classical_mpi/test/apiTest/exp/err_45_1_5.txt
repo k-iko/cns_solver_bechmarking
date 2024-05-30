@@ -1,0 +1,1 @@
+customer id (aka custno) set to other than 0 or positive integer or "e" + positive integer  or "b" + positive integer(custno = -1)

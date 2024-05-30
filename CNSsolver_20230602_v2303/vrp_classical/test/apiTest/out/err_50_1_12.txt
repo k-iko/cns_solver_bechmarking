@@ -1,0 +1,1 @@
+break spot (aka takebreak) has unvisitable vehicles (aka reje_ve) (vehno = 0, custno = b1)

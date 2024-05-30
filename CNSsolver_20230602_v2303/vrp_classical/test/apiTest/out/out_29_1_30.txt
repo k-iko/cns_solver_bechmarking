@@ -1,0 +1,117 @@
+----------------------------------------------------------------
+vehno:0
+cap:300
+cap2:300
+route [
+	[custno:0:	spotid:0:	spotno:0:	y:35.19807886:	x:137.0112822:	dem:0.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.0:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[0]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765817.0:	due_fs:8765823.0:	deny_unass:False	]
+	[custno:2:	spotid:1:	spotno:1:	y:35.19807886:	x:137.0112822:	dem:150.0:	dem2:150.0:	ready:2000/1/1 9:00:00:	due:2000/1/1 17:00:00:	servt:0.016666666666666666:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[2]:	demdivideunit:1:	requestType:PICKUP:	changecust:free:	ready_fs:0.0:	due_fs:8.0:	deny_unass:False	]
+	[custno:3:	spotid:1:	spotno:1:	y:35.19807886:	x:137.0112822:	dem:140.0:	dem2:150.0:	ready:2000/1/1 9:00:00:	due:2000/1/1 17:00:00:	servt:0.016666666666666666:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[3]:	demdivideunit:1:	requestType:PICKUP:	changecust:free:	ready_fs:0.0:	due_fs:8.0:	deny_unass:False	]
+	[custno:0:	spotid:0:	spotno:0:	y:35.19807886:	x:137.0112822:	dem:0.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.0:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[0]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765817.0:	due_fs:8765823.0:	deny_unass:False	]
+]
+totalcost:2000.0
+totalcost_wolast:1000.0
+arr:[0.0, 1.0, 1.0166666666666666, 2.033333333333333]
+load_onbrd:0.0
+load_onbrd2:0.0
+load_pickup:290.0
+load_pickup2:300.0
+opskill:1.0
+drskill:1.0
+rtid:None
+e_capacity:10.0
+e_initial:0.0
+e_cost:1.0
+e_margin:0.0
+rem_batt:[0.0, -1.0, -1.0, -2.0]
+chg_batt:[0.0, 0.0, 0.0, 0.0]
+chg_batt_dict:{}
+slack_t:[6.983333333333333, 6.983333333333333, 6.983333333333333, 8765820.966666667]
+time_pen:0.0
+load_pen:0.0
+load_pen2:0.0
+vtype:0
+etype:common
+enddepot [
+custno:0:	spotid:0:	spotno:0:	y:35.19807886:	x:137.0112822:	dem:0.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.0:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[0]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765817.0:	due_fs:8765823.0:	deny_unass:False:	]
+]
+startoptime:2000/1/1 9:00:00
+endoptime:2000/1/1 17:00:00
+direct_flag:True
+starthour:0.0
+endhour:8.0
+delay_arr:[]
+delay_totalcost:0.0
+delay_totalcost_wolast:0.0
+delay_rem_batt:[]
+delay_chg_batt:[]
+delay_chg_batt_dict:{}
+delay_slack_t:[]
+maxvisit:0
+maxrotate:0
+depotservt:0.0
+rmpriority:0
+takebreak:[]
+reserved_v_flag:False
+remdist:[2000.0, 1000.0, 1000.0, 0.0]
+st:[0.0, 1.0, 1.0166666666666666, 2.033333333333333]
+lv:[0.0, 1.0166666666666666, 1.0333333333333332, 2.033333333333333]
+
+----------------------------------------------------------------
+vehno:1
+cap:300
+cap2:300
+route [
+	[custno:0:	spotid:0:	spotno:0:	y:35.19807886:	x:137.0112822:	dem:0.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.0:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[0]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765817.0:	due_fs:8765823.0:	deny_unass:False	]
+	[custno:5:	spotid:5:	spotno:2:	y:35.19807886:	x:137.0112822:	dem:1.0:	dem2:1.0:	ready:2000/1/1 9:00:00:	due:2000/1/1 17:00:00:	servt:0.016666666666666666:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[5]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:0.0:	due_fs:8.0:	deny_unass:False	]
+	[custno:1:	spotid:1:	spotno:1:	y:35.19807886:	x:137.0112822:	dem:150.0:	dem2:130.0:	ready:2000/1/1 9:00:00:	due:2000/1/1 17:00:00:	servt:0.016666666666666666:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[1]:	demdivideunit:1:	requestType:PICKUP:	changecust:free:	ready_fs:0.0:	due_fs:8.0:	deny_unass:False	]
+	[custno:4:	spotid:1:	spotno:1:	y:35.19807886:	x:137.0112822:	dem:110.0:	dem2:180.0:	ready:2000/1/1 9:00:00:	due:2000/1/1 17:00:00:	servt:0.016666666666666666:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[4]:	demdivideunit:1:	requestType:PICKUP:	changecust:free:	ready_fs:0.0:	due_fs:8.0:	deny_unass:False	]
+	[custno:0:	spotid:0:	spotno:0:	y:35.19807886:	x:137.0112822:	dem:0.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.0:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[0]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765817.0:	due_fs:8765823.0:	deny_unass:False	]
+]
+totalcost:3000.0
+totalcost_wolast:2000.0
+arr:[0.0, 1.0, 2.0166666666666666, 2.033333333333333, 3.05]
+load_onbrd:1.0
+load_onbrd2:1.0
+load_pickup:260.0
+load_pickup2:310.0
+opskill:1.0
+drskill:1.0
+rtid:None
+e_capacity:10.0
+e_initial:0.0
+e_cost:1.0
+e_margin:0.0
+rem_batt:[0.0, -1.0, -2.0, -2.0, -3.0]
+chg_batt:[0.0, 0.0, 0.0, 0.0, 0.0]
+chg_batt_dict:{}
+slack_t:[5.966666666666667, 5.966666666666667, 5.966666666666667, 5.966666666666667, 8765819.95]
+time_pen:0.0
+load_pen:0.0
+load_pen2:10.0
+vtype:1
+etype:common
+enddepot [
+custno:0:	spotid:0:	spotno:0:	y:35.19807886:	x:137.0112822:	dem:0.0:	dem2:0.0:	ready:1000/1/1 0:00:00:	due:3000/1/1 0:00:00:	servt:0.0:	node::	e_rate:0:	reje_ve:[]:	parkt_arrive:0.0:	parkt_open:0.0:	depotservt:0.0:	additionalcust:[0]:	demdivideunit:1:	requestType:DELIVERY:	changecust:free:	ready_fs:-8765817.0:	due_fs:8765823.0:	deny_unass:False:	]
+]
+startoptime:2000/1/1 9:00:00
+endoptime:2000/1/1 17:00:00
+direct_flag:False
+starthour:0.0
+endhour:8.0
+delay_arr:[]
+delay_totalcost:0.0
+delay_totalcost_wolast:0.0
+delay_rem_batt:[]
+delay_chg_batt:[]
+delay_chg_batt_dict:{}
+delay_slack_t:[]
+maxvisit:0
+maxrotate:0
+depotservt:0.0
+rmpriority:0
+takebreak:[]
+reserved_v_flag:False
+remdist:[3000.0, 2000.0, 1000.0, 1000.0, 0.0]
+st:[0.0, 1.0, 2.0166666666666666, 2.033333333333333, 3.05]
+lv:[0.0, 1.0166666666666666, 2.033333333333333, 2.05, 3.05]
+

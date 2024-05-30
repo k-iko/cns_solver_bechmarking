@@ -1,0 +1,1 @@
+CS_spots include something not "e" + positive integer (custno = 2)

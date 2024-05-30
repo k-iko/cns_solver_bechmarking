@@ -1,0 +1,1 @@
+charging rate of charging stations (aka e_rate) set to less than 0 (e_rate = -1)

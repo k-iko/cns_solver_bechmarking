@@ -1,0 +1,1 @@
+spotid of CS_spot must be the same as customer id (aka custno) of CS_spot

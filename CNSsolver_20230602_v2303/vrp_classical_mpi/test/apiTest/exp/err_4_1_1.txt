@@ -1,0 +1,1 @@
+APE margin of time-leveling (aka avetime_ape) set to less than 0.0 (avetime_ape = -1.0)

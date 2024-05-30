@@ -1,0 +1,1 @@
+APE margin of distance-leveling (aka avedist_ape) set to less than 0.0 (avedist_ape = -1.0)

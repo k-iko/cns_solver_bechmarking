@@ -1,0 +1,1 @@
+same empCost tables (aka xtable) exist

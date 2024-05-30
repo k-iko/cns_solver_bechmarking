@@ -1,0 +1,1 @@
+request type of load (aka requestType) set to other than "DELIVERY" or "PICKUP" (requestType = DELIVER)

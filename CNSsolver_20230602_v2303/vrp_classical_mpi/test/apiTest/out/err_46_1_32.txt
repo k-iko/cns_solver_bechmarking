@@ -1,0 +1,1 @@
+all custno of customer class (aka _custs) must include all customer id (aka custno) of iniroutes (custno = 1, customer = ['0', '1'], iniroutes = ['0', '1', '1', '0'])

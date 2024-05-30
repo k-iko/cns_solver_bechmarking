@@ -1,0 +1,1 @@
+weight of distance leveling penalty (aka distLevelingPenaltyWeight) set to less than 0.0 (distLevelingPenaltyWeight = -1.0)

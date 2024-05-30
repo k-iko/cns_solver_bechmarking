@@ -1,0 +1,1 @@
+all customers id (aka custno) differs from all custno of customer class (aka _custs) (custno = ['157'], customer = ['156', '157'], iniroutes = ['156'])

@@ -1,0 +1,139 @@
+_custs =  ['0', '1', '2'] , e_spots =  [] , _vehs =  [0, 1] , _nbflag =  {'relflag': True, 'inswapflag': True, 'exflag': True, 'crossflag': True, 'mergeflag': False} , iniroutes =  [['route0', '0', '1', '0'], ['route0', '0', '2', '0']] , skills =  None , argvs =  <main_tw.Argvs object at 0x000001B392924E80>
+row: ['route0', '0', '1', '0']
+row: ['route0', '0', '2', '0']
+after initialization
+===== VEHICLE  0  =====
+TOTAL_DISTANCE: 2000.0
+TOTAL_DISTANCE_TO_LASTCUST: 1000.0
+NUMBER_OF_CUSTOMERS: 1 (spot=1)
+ALL_DEMAND(DELIVERY): 0
+ALL_DEMAND(PICKUP): 500.0
+LOAD_CAPACITY: 300
+OPERATIONSKILL/DRIVINGSKILL: 1.0 1.0
+WORKING_TIME: 0.0-8.0(2000/1/1 9:00:00-2000/1/1 17:00:00)
++--------------+--------------+--------------+--------------+
+|   cust_no    |      0       |      1       |      0       |
++==============+==============+==============+==============+
+| arrival_time | 0            | 1            | 2.017        |
++--------------+--------------+--------------+--------------+
+| park_time_ar | 0.0          | 0.0          | 0.0          |
+| park_time_op | 0.0          | 0.0          | 0.0          |
++--------------+--------------+--------------+--------------+
+| loading_time | 0            | 0.017        | 0            |
++--------------+--------------+--------------+--------------+
+| cust_time    | (-8765817.0, | (0.0, 8.0)   | (-8765817.0, |
+|              | 8765823.0)   |              | 8765823.0)   |
++--------------+--------------+--------------+--------------+
+| load         | 0            | 500.0 *      | 0            |
++--------------+--------------+--------------+--------------+
+
+===== VEHICLE  1  =====
+TOTAL_DISTANCE: 2000.0
+TOTAL_DISTANCE_TO_LASTCUST: 1000.0
+NUMBER_OF_CUSTOMERS: 1 (spot=1)
+ALL_DEMAND(DELIVERY): 0
+ALL_DEMAND(PICKUP): 100.0
+LOAD_CAPACITY: 300
+OPERATIONSKILL/DRIVINGSKILL: 1.0 1.0
+WORKING_TIME: 0.0-8.0(2000/1/1 9:00:00-2000/1/1 17:00:00)
++--------------+--------------+--------------+--------------+
+|   cust_no    |      0       |      2       |      0       |
++==============+==============+==============+==============+
+| arrival_time | 0            | 1            | 2.017        |
++--------------+--------------+--------------+--------------+
+| park_time_ar | 0.0          | 0.0          | 0.0          |
+| park_time_op | 0.0          | 0.0          | 0.0          |
++--------------+--------------+--------------+--------------+
+| loading_time | 0            | 0.017        | 0            |
++--------------+--------------+--------------+--------------+
+| cust_time    | (-8765817.0, | (0.0, 8.0)   | (-8765817.0, |
+|              | 8765823.0)   |              | 8765823.0)   |
++--------------+--------------+--------------+--------------+
+| load         | 0            | 100          | 0            |
++--------------+--------------+--------------+--------------+
+
+
+-----
+TOTAL_DISTANCE: 4000.0
+TOTAL_DISTANCE_TO_LASTCUST: 2000.0
+-----
+customers =  ['0', '1', '2'] , vehicles =  [0, 1] , nbflag =  {'relflag': True, 'inswapflag': True, 'exflag': True, 'crossflag': True, 'mergeflag': True} , ivnum =  2 , skills =  None , argvs =  <main_tw.Argvs object at 0x000001B392924E80>
+ relocate: 0 inswap: 0  exchange: 0  merge: 0  cross: 0
+customers(custno = 1, 2) were divided
+ relocate: 0 inswap: 0  exchange: 1  merge: 0  cross: 0
+ relocate: 0 inswap: 0  exchange: 0  merge: 0  cross: 0
+customers(custno = 2, 1) were divided
+ relocate: 0 inswap: 0  exchange: 2  merge: 0  cross: 0
+ relocate: 0 inswap: 0  exchange: 0  merge: 0  cross: 0
+customers(custno = 1, 2) were divided
+ relocate: 0 inswap: 0  exchange: 2  merge: 0  cross: 0
+ relocate: 0 inswap: 0  exchange: 0  merge: 0  cross: 0
+customers(custno = 2, 1) were divided
+ relocate: 0 inswap: 0  exchange: 2  merge: 0  cross: 0
+ relocate: 0 inswap: 0  exchange: 0  merge: 0  cross: 0
+customers(custno = 1, 2) were divided
+ relocate: 0 inswap: 0  exchange: 2  merge: 0  cross: 0
+ relocate: 0 inswap: 0  exchange: 0  merge: 0  cross: 0
+customers(custno = 2, 1) were divided
+ relocate: 0 inswap: 0  exchange: 2  merge: 0  cross: 0
+ relocate: 0 inswap: 0  exchange: 0  merge: 0  cross: 0
+customers(custno = 1, 2) were divided
+ relocate: 0 inswap: 0  exchange: 2  merge: 0  cross: 0
+ relocate: 0 inswap: 0  exchange: 0  merge: 0  cross: 0
+customers(custno = 2, 1) were divided
+ relocate: 0 inswap: 0  exchange: 2  merge: 0  cross: 0
+ relocate: 0 inswap: 0  exchange: 0  merge: 0  cross: 0
+
+----------------vehicle log output----------------
+===== VEHICLE  0  =====
+TOTAL_DISTANCE: 3000.0
+TOTAL_DISTANCE_TO_LASTCUST: 2000.0
+NUMBER_OF_CUSTOMERS: 2 (spot=2)
+ALL_DEMAND(DELIVERY): 0
+ALL_DEMAND(PICKUP): 300.0
+LOAD_CAPACITY: 300
+OPERATIONSKILL/DRIVINGSKILL: 1.0 1.0
+WORKING_TIME: 0.0-8.0(2000/1/1 9:00:00-2000/1/1 17:00:00)
+LOAD_DIVIDING_NUMBER: 0
++--------------+--------------+--------------+--------------+--------------+
+|   cust_no    |      0       |      2       |      1       |      0       |
++==============+==============+==============+==============+==============+
+| arrival_time | 0            | 1            | 2.017        | 3.033        |
++--------------+--------------+--------------+--------------+--------------+
+| park_time_ar | 0.0          | 0.0          | 0.0          | 0.0          |
+| park_time_op | 0.0          | 0.0          | 0.0          | 0.0          |
++--------------+--------------+--------------+--------------+--------------+
+| loading_time | 0            | 0.017        | 0.017        | 0            |
++--------------+--------------+--------------+--------------+--------------+
+| cust_time    | (-8765817.0, | (0.0, 8.0)   | (0.0, 8.0)   | (-8765817.0, |
+|              | 8765823.0)   |              |              | 8765823.0)   |
++--------------+--------------+--------------+--------------+--------------+
+| load         | 0            | 50           | 300          | 0            |
++--------------+--------------+--------------+--------------+--------------+
+
+===== VEHICLE  1  =====
+TOTAL_DISTANCE: 3000.0
+TOTAL_DISTANCE_TO_LASTCUST: 2000.0
+NUMBER_OF_CUSTOMERS: 2 (spot=2)
+ALL_DEMAND(DELIVERY): 0
+ALL_DEMAND(PICKUP): 300.0
+LOAD_CAPACITY: 300
+OPERATIONSKILL/DRIVINGSKILL: 1.0 1.0
+WORKING_TIME: 0.0-8.0(2000/1/1 9:00:00-2000/1/1 17:00:00)
+LOAD_DIVIDING_NUMBER: 2
++--------------+--------------+--------------+--------------+--------------+
+|   cust_no    |      0       |      1       |      2       |      0       |
++==============+==============+==============+==============+==============+
+| arrival_time | 0            | 1            | 2.017        | 3.033        |
++--------------+--------------+--------------+--------------+--------------+
+| park_time_ar | 0.0          | 0.0          | 0.0          | 0.0          |
+| park_time_op | 0.0          | 0.0          | 0.0          | 0.0          |
++--------------+--------------+--------------+--------------+--------------+
+| loading_time | 0            | 0.017        | 0.017        | 0            |
++--------------+--------------+--------------+--------------+--------------+
+| cust_time    | (-8765817.0, | (0.0, 8.0)   | (0.0, 8.0)   | (-8765817.0, |
+|              | 8765823.0)   |              |              | 8765823.0)   |
++--------------+--------------+--------------+--------------+--------------+
+| load         | 0            | 250          | 300          | 0            |
++--------------+--------------+--------------+--------------+--------------+
+

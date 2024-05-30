@@ -1,0 +1,1 @@
+AE margin of time-leveling (aka avetime_ae) set to less than 0.0 (avetime_ae = -1.0)

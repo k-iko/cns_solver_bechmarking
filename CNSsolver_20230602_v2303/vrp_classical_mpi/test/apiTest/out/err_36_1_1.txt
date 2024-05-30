@@ -1,0 +1,1 @@
+APE margin of visits-leveling (aka avevisits_ape) set to less than 0.0 (avevisits_ape = -1.0)

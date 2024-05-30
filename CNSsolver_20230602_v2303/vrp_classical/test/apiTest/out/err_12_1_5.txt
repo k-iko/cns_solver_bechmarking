@@ -1,0 +1,1 @@
+spotid = "0" must be set to depot or last spot

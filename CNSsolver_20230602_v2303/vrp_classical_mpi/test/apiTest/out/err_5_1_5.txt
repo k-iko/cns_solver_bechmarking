@@ -1,0 +1,1 @@
+epower for optimization metric (aka opt_e_weight) set to less than 0.0 (opt_e_weight = -1.0)

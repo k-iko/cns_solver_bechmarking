@@ -1,0 +1,1 @@
+parking time (aka parkt_open) set to less than 0 (parkt_open = -0.016666666666666666)

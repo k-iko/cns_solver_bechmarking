@@ -1,0 +1,1 @@
+customer id (aka custno) set to not as string of integer (custno = -156)

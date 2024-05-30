@@ -1,0 +1,1 @@
+distance table (aka dtable) does not match spotid (len(dtable) = 3, number of spotid = 2)

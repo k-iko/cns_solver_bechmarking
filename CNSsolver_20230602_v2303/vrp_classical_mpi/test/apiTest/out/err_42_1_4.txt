@@ -1,0 +1,1 @@
+type of time leveling penalty (aka timeLevelingPenaltyType) set to other than "soft" or "hard" (timeLevelingPenaltyType = normal)

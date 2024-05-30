@@ -1,0 +1,1 @@
+cannot insert customer into all vehicles

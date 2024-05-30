@@ -1,0 +1,1 @@
+load dividing number (aka demdivideunit) must be 0 or positive integer (demdivideunit = -1)

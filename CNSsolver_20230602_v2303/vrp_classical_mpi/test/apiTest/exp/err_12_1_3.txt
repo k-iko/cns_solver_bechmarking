@@ -1,0 +1,1 @@
+eta table (aka ttable) does not match spotid (len(ttable) = 2, number of spotid = 3)

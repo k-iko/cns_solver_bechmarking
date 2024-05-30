@@ -1,0 +1,1 @@
+end spot (aka enddepot) has unvisitable vehicles (aka reje_ve) (vehno = 0, reje_ve = [0], enddepot = 2)

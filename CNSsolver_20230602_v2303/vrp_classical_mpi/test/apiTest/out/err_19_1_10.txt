@@ -1,0 +1,1 @@
+failed to create initial solution due to cost of -1 or unvisitable vehicles or max visits or fixed vehicles

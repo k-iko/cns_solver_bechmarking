@@ -1,0 +1,1 @@
+failed to calculate APE margin of time-leveling (aka avetime_ape) due to delivery time = 0

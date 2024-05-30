@@ -1,0 +1,33 @@
+{
+	"management_dtable": [{
+		"vtype": "common",
+		"start_time": 0.0,
+		"table": [
+			[0, 1000.0],
+			[1000.0, 0]
+		]
+	}],
+	"management_ttable": [{
+		"vtype": "common",
+		"start_time": 0.0,
+		"table": [
+			[0, 1.0],
+			[1.0, 0]
+		]
+	}],
+	"management_xtable": [{
+		"vtype": "common",
+		"start_time": 0.0,
+		"table": [
+			[0, 1000.0],
+			[1000.0, 0]
+		]
+	}, {
+		"vtype": "common",
+		"start_time": 1.0,
+		"table": [
+			[0, 2.0],
+			[2.0, 0]
+		]
+	}]
+}

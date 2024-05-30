@@ -1,0 +1,1 @@
+type of load penalty (aka loadPenaltyType) set to other than "soft" or "hard" (loadPenaltyType = normal)

@@ -1,0 +1,1 @@
+weight of time penalty (aka timePenaltyWeight) set to less than 0.0 (timePenaltyWeight = -1.0)

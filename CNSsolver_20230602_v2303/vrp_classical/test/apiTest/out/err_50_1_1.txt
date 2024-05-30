@@ -1,0 +1,1 @@
+interval of break (aka break_interval) set to less than 0 (break_interval = -1.0)

@@ -1,0 +1,1 @@
+all load dividing numbers (aka demdivideunit) must be 1 when bulkShipping (aka bulkShipping_flag) is true (demdivideunit = 0)

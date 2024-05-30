@@ -1,0 +1,1 @@
+epower table (aka etable) does not match spotid (len(etable) = 3, number of spotid = 4)

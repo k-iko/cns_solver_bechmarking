@@ -1,0 +1,16 @@
+{
+"main":"main_tw.py",
+"-i":"../../../data/DSS_FORMAT_02-0input_50.csv",
+"-d":"../../../data/DSS_FORMAT_02-0dist.csv",
+"-t":"../../../data/DSS_FORMAT_02-0time.csv",
+"-v":"5",
+"-vend":"../../../data/vendcust2.csv",
+"-si":"../../../data/spotid2.csv",
+"-s":"2000/1/1 9:00:00",
+"-e":"2000/1/1 17:00:00",
+"-o":"output_37_1_82.csv",
+"-a":"../../../data/DSS_FORMAT_02-0input_50-best0_initial_unass.csv",
+"-unass":"../../../data/unass_cust.csv",
+"-reservedv":"../../../data/reserved_v.csv",
+"-rej":"../../../data/rejectve_unass.csv"
+}

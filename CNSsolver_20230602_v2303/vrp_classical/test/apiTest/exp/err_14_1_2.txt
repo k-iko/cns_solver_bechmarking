@@ -1,0 +1,1 @@
+depot, spot whose customer id (aka custno) = "0", has unvisitable vehicles (aka reje_ve) (reje_ve = [0])

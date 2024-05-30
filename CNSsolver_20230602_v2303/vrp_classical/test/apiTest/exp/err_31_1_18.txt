@@ -1,0 +1,1 @@
+max epower (aka e_capacity) <= marginal epower (aka e_margin) (e_capacity = 10.0, e_margin = 10.0)

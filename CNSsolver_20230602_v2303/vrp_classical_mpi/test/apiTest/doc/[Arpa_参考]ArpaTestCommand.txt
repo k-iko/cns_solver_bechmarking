@@ -1,0 +1,15 @@
+Test1
+python ./main_tw.py -i ./test1-1/arpa_test1_input.csv -d ./test1-1/arpa_test1_dist.csv -t ./test1-1/arpa_test1_time.csv -v 2 -s "2000/1/1 1:00:00" -e "2000/1/1 6:00:00" -o ./test1-1/arpa_test1-1_output.csv -a ./test1-1/arpa_test1_initial.csv -l > ./test1-1/arpa_test1-1_result.txt
+
+python ./main_tw.py -i ./test1-2/arpa_test1_input.csv -d ./test1-2/arpa_test1_dist.csv -t ./test1-2/arpa_test1_time.csv -v 2 -s "2000/1/1 1:00:00" -e "2000/1/1 6:00:00" -o ./test1-2/arpa_test1-2_output.csv -ave 10 -a ./test1-2/arpa_test1_initial.csv -l > ./test1-2/arpa_test1-2_result.txt
+
+Test2
+python ./main_tw.py -i ./test2-1/arpa_test2-1_input.csv -d ./test2-1/arpa_test2_dist.csv -t ./test2-1/arpa_test2_time.csv -v 2 -s "2000/1/1 1:00:00" -e "2000/1/1 6:00:00" -o ./test2-1/arpa_test2-1_output.csv -a ./test2-1/arpa_test1_initial.csv -l > ./test2-1/arpa_test2-1_result.txt
+
+python ./main_tw.py -i ./test2-2/arpa_test2-2_input.csv -d ./test2-2/arpa_test2_dist.csv -t ./test2-2/arpa_test2_time.csv -v 2 -s "2000/1/1 1:00:00" -e "2000/1/1 6:00:00" -o ./test2-2/arpa_test2-2_output.csv -a ./test2-1/arpa_test1_initial.csv -l > ./test2-2/arpa_test2-2_result.txt
+
+Test3(初期解ありなしで、2パターン行う)
+python ./main_tw.py -i ./test3-1/arpa_test3-1_input.csv -d ./test3-1/arpa_test3_dist.csv -t ./test3-1/arpa_test3_time.csv -v 1 -s "2000/1/1 1:00:00" -e "2000/1/1 6:00:00" -o ./test3-1/arpa_test3-1_output.csv -l > ./test3-1/arpa_test3-1_result.txt
+
+python ./main_tw.py -i ./test3-1/arpa_test3-1_input.csv -d ./test3-1/arpa_test3_dist.csv -t ./test3-1/arpa_test3_time.csv -v 1 -s "2000/1/1 1:00:00" -e "2000/1/1 6:00:00" -o ./test3-1/arpa_test3-1_initial_output.csv -a ./test3-1/arpa_test3_initial.csv -l > ./test3-1/arpa_test3-1_initial_result.txt
+

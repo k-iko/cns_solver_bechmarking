@@ -1,0 +1,1 @@
+distance for optimization metirc (aka opt_d_weight) set to less than 0.0 (opt_d_weight = -1.0)

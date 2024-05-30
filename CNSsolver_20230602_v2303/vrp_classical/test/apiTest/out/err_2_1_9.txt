@@ -1,0 +1,1 @@
+initial solution (aka iniroutes) length is more than length of vehicle class (aka _vehs) (len(iniroutes) = 2, len(vehicle) = 1)

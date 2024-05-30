@@ -1,0 +1,1 @@
+type of visits leveling penalty (aka visitsLevelingPenaltyType) set to other than "soft" or "hard" (visitsLevelingPenaltyType = normal)

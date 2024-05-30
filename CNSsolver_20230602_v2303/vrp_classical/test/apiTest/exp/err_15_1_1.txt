@@ -1,0 +1,1 @@
+both reducing vehicles (aka decr_vnum) and using skill (aka skillfile) set

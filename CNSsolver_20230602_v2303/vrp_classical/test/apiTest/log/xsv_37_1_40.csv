@@ -1,0 +1,5 @@
+VEHICLE_TYPE,START_TIME,X-COST_FILE
+0,2000/1/1 10:00:00,../../../data/x-cost.csv
+0,2000/1/1 12:00:00,../../../data/x-cost.csv
+1,2000/1/1 10:00:00,../../../data/x-cost.csv
+1,2000/1/1 12:00:00,../../../data/x-cost.csv

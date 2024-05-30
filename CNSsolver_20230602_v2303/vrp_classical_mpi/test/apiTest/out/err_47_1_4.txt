@@ -1,0 +1,1 @@
+both APE margin of distance-leveling (aka avedist_ape_flag) and AE margin of distance-leveling (aka avedist_ae_flag) set

@@ -1,0 +1,1 @@
+initial solution (aka iniroutes) includes plan without customers (routes = ['0', '0', '0'])

@@ -1,0 +1,1 @@
+parking time (aka parkt_arrive) set to less than 0 (parkt_arrive = -0.016666666666666666)

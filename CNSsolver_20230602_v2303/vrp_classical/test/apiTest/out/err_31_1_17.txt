@@ -1,0 +1,1 @@
+max epower (aka e_capacity) < init epower (aka e_initial) (e_capacity = 8.0, e_initital = 10.0)

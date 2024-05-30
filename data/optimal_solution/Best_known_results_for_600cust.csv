@@ -1,0 +1,64 @@
+﻿Instance,Vehicles,Distance,Reference,Date,Comment
+c1_6_1,60,14095.64,GH,2001,Detailed solution by Q
+c1_6_2,56,14163.31,PGDR,17-oct-07,Detailed solution by Q
+c1_6_3,56,13777.81,BC4,05-apr-12,
+c1_6_4,56,13558.54,Q,30-sep-13,
+c1_6_5,60,14085.72,VCGP,31-jul-12,
+c1_6_6,59,15832.68,SCR,Apr-19,
+c1_6_7,57,15731.2,SCR,19-dec-21,
+c1_6_8,56,14385.8,SCR,19-dec-21,
+c1_6_9,56,13693.42,VCGP,31-jul-12,
+c1_6_10,56,13637.34,NBD,2009,Detailed solution by VCGP
+c2_6_1,18,7774.1,MB,16-sep-03,"There are questions whether 7774.10 is valid, several authors report 7774.16"
+c2_6_2,17,8258.2,"CAINIAO
+SCR",Nov-18,Tie
+c2_6_3,17,7506.62,SCR,Nov-18,
+c2_6_4,17,6909.58,Q,18-mar-15,
+c2_6_5,18,7575.2,BSJ2,20-sep-07,Detailed solution by SCR
+c2_6_6,18,7470.36,MB2,18-jul-12,"There are questions whether 7470.36 is valid, several authors report 7471.17"
+c2_6_7,18,7512.07,BC4,05-apr-12,
+c2_6_8,17,7539.73,Q,08-jul-16,
+c2_6_9,17,7911.61,CAINIAO,Sep-18,
+c2_6_10,17,7255.69,VCGP,31-jul-12,
+r1_6_1,59,21394.95,"CAINIAO
+SCR",Apr-19,Tie
+r1_6_2,54,18585,SCR,19-dec-21,
+r1_6_3,54,16900.67,SCR,19-dec-21,
+r1_6_4,54,15748.07,SCR,19-dec-21,
+r1_6_5,54,19381.52,SCR,19-dec-21,
+r1_6_6,54,17790.97,SCR,19-dec-21,
+r1_6_7,54,16522.52,SCR,19-dec-21,
+r1_6_8,54,15610,SCR,Apr-19,
+r1_6_9,54,18530.96,SCR,Jun-19,
+r1_6_10,54,17610.12,SCR,Apr-19,
+r2_6_1,11,18205.58,CAINIAO,Sep-18,
+r2_6_2,11,14754.13,CAINIAO,Dec-18,
+r2_6_3,11,11188.7,SCR,23-jul-18,
+r2_6_4,11,8008.14,CAINIAO,Feb-19,
+r2_6_5,11,15067.34,SCR,Oct-18,
+r2_6_6,11,12498.27,SCR,Oct-18,
+r2_6_7,11,10064.56,SCR,18-sep-18,
+r2_6_8,11,7571.99,SCR,Oct-18,
+r2_6_9,11,13377.56,NBD,2009,Detailed solution by BC4
+r2_6_10,11,12202.28,SCR,Oct-18,
+rc1_6_1,55,16982.86,SCR,Jun-19,
+rc1_6_2,55,15914.7,CAINIAO,Oct-18,
+rc1_6_3,55,15204.64,Q,23-dec-16,
+rc1_6_4,55,14777.19,SCR,08-sep-18,
+rc1_6_5,55,16559.78,SCR,19-dec-21,
+rc1_6_6,55,16496.88,SCR,19-dec-21,
+rc1_6_7,55,16077.12,Q,07-sep-17,
+rc1_6_8,55,15914.91,Q,23-dec-16,
+rc1_6_9,55,15826.24,Q,23-dec-16,
+rc1_6_10,55,15675.53,SCR,19-dec-21,
+rc2_6_1,14,13324.93,BC4,05-apr-12,
+rc2_6_2,12,11555.51,BC4,05-apr-12,
+rc2_6_3,11,9438.52,SCR,Nov-18,
+rc2_6_4,11,7057.94,CAINIAO,Nov-18,
+rc2_6_5,11,12909.07,SCR,19-dec-21,
+rc2_6_6,11,11913.11,CAINIAO,Dec-18,
+rc2_6_7,11,10711.85,SCR,19-dec-21,
+rc2_6_8,11,9990.4,CAINIAO,Oct-18,
+rc2_6_9,11,9574.99,CAINIAO,19-Sep-18,
+rc2_6_10,11,9058.9,SCR,Apr-19,
+,,,0,0,0

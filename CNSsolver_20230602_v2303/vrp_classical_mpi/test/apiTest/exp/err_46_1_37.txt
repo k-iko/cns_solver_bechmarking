@@ -1,0 +1,1 @@
+load divided customers are succesive (custno = 1)

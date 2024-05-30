@@ -1,0 +1,1 @@
+number of threads (aka multithread_num) must be 0 or positive integer (multithread_num = -1)

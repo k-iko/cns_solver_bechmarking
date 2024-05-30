@@ -1,0 +1,1 @@
+type of distance leveling penalty (aka distLevelingPenaltyType) set to other than "soft" or "hard" (distLevelingPenaltyType = normal)

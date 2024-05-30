@@ -1,0 +1,1 @@
+Usage: br_time must be greater than or equal to 0.0 (break_time = -1.0)

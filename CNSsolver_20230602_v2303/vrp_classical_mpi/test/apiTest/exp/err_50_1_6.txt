@@ -1,0 +1,1 @@
+time (aka ready and due) of break additionalcust must be set to the same of original customer (custno = b10001)

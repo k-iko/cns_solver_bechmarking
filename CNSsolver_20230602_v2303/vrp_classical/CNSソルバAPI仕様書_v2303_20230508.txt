@@ -1,0 +1,1720 @@
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+CNSソルバAPI仕様書 2023/5/8 対応ソルババージョンv2303
+
+
+○ 本資料の注意点
+
+* CNSソルバAPI仕様書_v2209_20220921との差分箇所には以下を記述
+  * ※1027差分箇所XX
+  * ※1202差分箇所XX
+  * ※0331差分箇所変更
+  * ※0508差分箇所変更
+  * ((XXには追加 or 削除 or 変更が入る))
+
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+API呼び出しフロー
+
+
+----------------------------------------------------------------------
+配送計画関連の呼び出しフロー
+
+
+以下の順序で呼び出すこと
+
+set_initroutes2 or adjust_nveh_construction_I2
+                ↓
+      localsearch_dtable
+      localsearch_ev(充電解を作成する場合、呼び出す)
+
+
+疑似コードは以下
+================================================================
+argvs  = Argvs(各種パラメータ, ..)
+custs  = [Customerオブジェクト1, Customerオブジェクト2, ..]
+if 充電解作成:
+  e_spots = [Customerオブジェクト1, Customerオブジェクト2, ..]
+vehs   = [Vehicleオブジェクト1, Vehicleオブジェクト2, ..]
+
+if 初期解インポート:
+  _, custs = set_initroutes2(custs, e_spots, vehs, 各種パラメータ, argvs)
+else:
+  _, custs = adjust_nveh_construction_I2(custs, e_spots, vehs, 各種パラメタ, argvs)
+vehs, custs = localsearch_dtable(custs, vehs, 各種パラメタ, argvs)
+if 充電解作成:
+  (_, vehs) = localsearch_ev(custs, vehs, e_spots, argvs)
+================================================================
+
+
+----------------------------------------------------------------------
+ロギング処理
+
+
+○ サポートするログ内容
+
+Pythonのloggingライブラリを用いたログ処理に対応
+* DEBUGレベル    : 各API呼出し時にファイル名、行数、API名、引数を出力
+* INFOレベル     : 内部処理や途中結果を随時出力
+* WARNINGレベル  : 未使用
+* ERRORレベル    : 例外発生時に例外内容を出力
+* CRITICALレベル : 未使用
+
+
+○ CNSソルバのログ機能を有効化する手順例
+
+CNSソルバ内部ではloggingライブラリを通じてログを生成する．CNSソルバの
+利用プログラムは，loggingライブラリでロガーを作成し，フォーマット・出
+力先を作成するだけでよい．
+
+具体的な方法はcnssolvergw(cns2105用).pyxを参照せよ．
+
+
+----------------------------------------------------------------------
+注意事項
+
+
+本フロー以外の呼び出しは動作保証外とする。
+
+各APIの各引数について、不正値を入れたときは、リジェクト処理して
+例外を発生させる。
+
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+制約条件
+
+
+○ 一覧
+
+制約                        内容                               種別
+車両営業時間枠制約          車両の営業時間違反                 ソフト
+配送先受入れ時間枠制約      配送先の受入れ時間違反             ソフト
+APE制約                     配送業務時間・件数のばらつき度合   ソフト
+積載量制約(2種類)           車両積載量違反                     ソフト
+残電力量制約                電動車両の電欠違反                 ソフト
+充電スポット営業時間枠制約  充電スポットの訪問時間違反         ハード
+電動車両充電量制約          電動車両の充電上限違反             ハード
+通行不可制約                移動経路無し                       ハード
+車両立寄不可制約            配送先へ訪問不可                   ハード
+車両訪問数上限              車両1台の訪問先件数の制限          ハード
+割当済荷物変更              割当済荷物変更可否                 ハード
+休憩設定                    休憩取得の間隔・時間の違反         ハード ※1027差分箇所追加
+未割当禁止荷物設定          未割当禁止荷物の未配送違反         ハード ※1202差分箇所追加
+
+○ 補足事項：APE制約について
+
+APE(absolute percentage error)とは車両の配送時間のバラつきであり、
+以下の式でAPEのペナルティが計算される。
+
+APE_i  = |t_i - μ|/μ   # absolute percentage error
+PAPE_i = ReLU(APE_i - T) # penalty of APE_i, T:閾値(ReLUは結果がマイナス値の場合0にする関数)
+PAPE   = ΣPAPE_i        # total penalty of APE
+t_i : 各車両の配送時間
+μ  : 車両の配送時間の平均
+
+APEマージンとは配送時間(あるいは件数)のバラつきを許容する範囲の値
+例えば、APEマージン=0.2の場合、バラつき最大の車両について、
+配送時間(あるいは件数)の平均値から上下20%の範囲までのバラつきを許容する。
+
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+配送計画出力要件
+
+
+出力配送計画が常に守るべき条件であり、詳細は以下
+
+それぞれのルートについて
+• 拠点が先頭に必ず現れる
+• 拠点が先頭と最後以外に現れない (※1)
+• 各車両の最後は、最終訪問先が指定されている場合、該当最終訪問先となる
+• 各車両の最後は、最終訪問先が指定されていない場合、拠点となる
+• 充電解作成の場合、同じ充電スポットが連続して現れない
+• 充電解作成の場合、充電スポットが2回以上現れない
+全ルート総合で
+• 配送先全てが先頭と最後以外に1回のみ過不足なく現れる (※2)(※3) ※1202差分箇所追加
+  (拠点、充電スポット、最終訪問先はチェック対象外)
+  (選択的配送の配送先はどれか1つが現れる)
+• 同じ車両識別子の車両が現れない
+
+(*1)multitrip_flag=Trueの場合、対象外
+(*2)荷物分割機能が働いた場合、対象外
+(*3)未割当荷物最適化が働いた場合、対象外
+
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+共通変数
+
+
+----------------------------------------------------------------------
+Argvs
+
+
+○ 説明
+
+配送ソルバの動作パラメータを格納するクラス
+設定はAPI呼び出しフロー前の初期設定時のみとし、API呼び出しフロー中は
+変更しないこと
+
+
+○ コンストラクタ
+def __init__(self, _argv=None):
+
+API利用者は第1引数を省略する(_argv=None)形でしか使わないこととする。
+各メンバへの値設定は、メンバ変数への直接代入で行うこと。
+
+
+○ メンバ
+
+• initfile：未使用のため説明省略、Noneを設定
+
+• lastc_flag：型:boolean
+True：非巡回モード
+False：巡回モード
+
+• lowertime：未使用のため説明省略、0.0を設定
+
+• uppertime：未使用のため説明省略、0.0を設定
+
+• timeout：型:float、単位:second、例:3600.0(1時間の意味)、値域:0以上の実数
+早期終了時間を時間で指定
+早期終了をしない場合、0.0を指定
+負の値が指定された場合、以下メッセージ出力
+"timeout value set to negative number"
+  
+• num_addv：未使用のため説明省略、-1を設定
+
+• decr_vnum：型:boolean
+True：台数削減モード
+False：台数固定モード
+
+• avetime_ape_flag：型:boolean
+True：配送時間のAPE制約を有効にする(APEについては制約条件の補足事項を参照)
+False：配送時間のAPE制約を無効にする
+
+• avetime_ape：型:float、単位:なし、例:0.2、値域:0以上の実数
+配送時間のAPEマージン(APEマージンについては制約条件の補足事項を参照)
+APEマージン=0.2を指定した場合は，20%のばらつきまで許容する。
+APEマージンに大きい値(例えば1.0以上)を指定した場合は，APE制約モードOFFと同じ効果となる。
+ただしこの場合，APE制約モードOFFとした方が実行時間は短い。
+0.0未満が指定された場合、以下メッセージ出力
+"APE margin of time-leveling (aka avetime_ape) set to less than 0.0"
+配送時間=0の車両があった場合、以下メッセージ出力
+"failed to calculate APE margin of time-leveling (aka avetime_ape) due to delivery time = 0"
+
+ • avetime_ae_flag：型:boolean
+True：配送時間のAE(absolutely error、各車両の配送時間について許容する時間の差)制約を有効にする
+False：配送時間のAE制約を無効にする
+avetime_ape_flagとavetime_ae_flagの同時指定は動作保証外
+同時指定がされた場合、以下メッセージ出力
+"both APE margin of time-leveling (aka avetime_ae_flag) and AE margin of time-leveling (aka avetime_ae_flag) set"
+
+• avetime_ae：型:float、単位:hour、例:0.5(30分の意味)、値域:0.0以上の実数
+各車両の配送時間について許容する時間の差を設定
+0.5を指定した場合は，30分の差まで許容する。
+大きい値(例えば100以上)を指定した場合は，本設定なしと同じ効果となる。
+ただしこの場合，本設定OFFとした方が実行時間は短い。
+0.0未満が指定された場合、以下メッセージ出力
+"AE margin of time-leveling (aka avetime_ae) set to less than 0.0"
+
+• avedist_ape_flag：型:boolean
+True：配送距離のAPE制約を有効にする(APEについては制約条件の補足事項を参照)
+False：配送距離のAPE制約を無効にする
+
+• avedist_ape：型:float、単位:なし、例:0.2、値域:0以上の実数
+配送距離のAPEマージン(APEマージンについては制約条件の補足事項を参照)
+APEマージン=0.2を指定した場合は，20%のばらつきまで許容する。
+APEマージンに大きい値(例えば1.0以上)を指定した場合は，APE制約モードOFFと同じ効果となる。
+ただしこの場合，APE制約モードOFFとした方が実行時間は短い。
+0.0未満が指定された場合、以下メッセージ出力
+"APE margin of distance-leveling (aka avedist_ape) set to less than 0.0"
+配送距離=0の車両があった場合、以下メッセージ出力
+"failed to calculate APE margin of distance-leveling (aka avedist_ape) due to distance = 0"
+
+ • avedist_ae_flag：型:boolean
+True：配送距離のAE(absolutely error、各車両の配送距離について許容する距離の差)制約を有効にする
+False：配送距離のAE制約を無効にする
+avedist_ape_flagとavedist_ae_flagの同時指定は動作保証外
+同時指定がされた場合、以下メッセージ出力
+"both APE margin of distance-leveling (aka avedist_ae_flag) and AE margin of distance-leveling (aka avedist_ae_flag) set"
+
+• avedist_ae：型:float、単位:なし、例:1000、値域:0.0以上の実数
+各車両の配送距離について許容する距離の差を設定
+1000を指定した場合は，1000の差まで許容する。
+単位は、後述する車両別時間別距離テーブル(management_dtable)に使用する値に合わせること。
+大きい値(車両別時間別距離テーブルで使用する値に比べて)を指定した場合は，本設定なしと同じ効果となる。
+ただしこの場合，本設定OFFとした方が実行時間は短い。
+0.0未満が指定された場合、以下メッセージ出力
+"AE margin of distance-leveling (aka avedist_ae) set to less than 0.0"
+
+• avevisits_ape_flag：型:boolean
+True：配送件数APE制約を有効にする(APEについては制約条件の補足事項を参照)
+False：配送件数APE制約を無効にする
+
+• avevisits_ape：型:float、単位:なし、例:0.2、値域:0以上の実数
+配送時間を配送件数に置き換えたAPEマージン(APEマージンについては制約条件の補足事項を参照)
+APEマージン=0.2を指定した場合は，20%のばらつきまで許容する。
+APEマージンに大きい値(例えば1.0以上)を指定した場合は，APE制約モードOFFと同じ効果となる。
+ただしこの場合，APE制約モードOFFとした方が実行時間は短い。
+件数は、後述するbulkShippingにて配送先を1つにまとめた場合、まとめる前の件数で計算する。
+0.0未満が指定された場合、以下メッセージ出力
+"APE margin of visits-leveling (aka avevisits_ape) set to less than 0.0"
+配送時間=0の車両があった場合、以下メッセージ出力
+"failed to calculate APE margin of visits-leveling (aka avevisits_ape) due to delivery number = 0"
+
+• avevisits_ae_flag：型:boolean
+True：配送件数のAE(absolutely error、各車両の配送件数について許容する件数の差)制約を有効にする
+False：配送件数のAE制約を無効にする
+avevisits_ape_flagとavevisits_ae_flagの同時指定は動作保証外
+同時指定がされた場合、以下メッセージ出力
+"both APE margin of visits-leveling (aka avevisits_ape_flag) and AE margin of visits-leveling (aka avevisits_ae_flag) set"
+
+• avevisits_ae：型:int、単位:件数、例:1、値域:0以上の整数
+各車両の配送件数について許容する件数の差を設定
+1を指定した場合は，1件の差まで許容する。
+大きい値(例えば100以上)を指定した場合は，本設定なしと同じ効果となる。
+ただしこの場合，本設定OFFとした方が実行時間は短い。
+件数は、後述するbulkShippingにて配送先を1つにまとめた場合、まとめる前の件数で計算する。
+0未満が指定された場合、以下メッセージ出力
+"AE margin of visits-leveling (aka avevisits_ae) set to less than 0"
+
+• demand：未使用のため説明省略、300を設定
+
+• demand2：未使用のため説明省略、300を設定
+
+• skillfile：型:str 
+None以外("dummy"等)：スキルモード有効
+None：スキルモード無効
+台数削減モードとスキルモード有効の同時指定は動作保証外
+同時指定がされた場合、以下メッセージ出力
+"both reducing vehicles (aka decr_vnum) and using skill (aka skillfile) set"
+
+• skillflag：未使用のため説明省略、0を設定
+
+• lastc2_flag：未使用のため説明省略、Falseを設定 ※1027差分箇所削除(未実装のため)
+
+• outputstime：未使用のため説明省略、0.0を設定
+
+• outputs_count：未使用のため説明省略、1.0を設定
+
+• multi_p：未使用のため説明省略、0を設定
+
+• evplan：型:boolean
+True：充電解作成を有効にする
+False：充電解作成を無効にする
+
+• e_vehicle_file：未使用のため説明省略、Noneを設定
+
+• e_spot_file：未使用のため説明省略、Noneを設定
+
+• e_cost_file：未使用のため説明省略、Noneを設定
+
+• ls_d_starttime：Argvsオブジェクト作成時に、time.time()を設定
+
+• opt_d_weight：型:float、単位:なし、例:1.0、値域:0.0以上1.0以下の実数
+距離で最適化する割合(※1)
+0.0より小さい値が指定された場合、以下メッセージ出力
+"distance for optimization metirc (aka opt_d_weight) set to less than 0.0"
+1.0より大きい値が指定された場合、以下メッセージ出力
+"distance for optimization metric (aka opt_d_weight) set to more than 1.0"
+
+• opt_t_weight：型:float、単位:なし、例:1.0、値域:0.0以上1.0以下の実数
+時間で最適化する割合(※1)
+
+0.0より小さい値が指定された場合、以下メッセージ出力
+"time for optimization metric (aka opt_t_weight) set to less than 0.0"
+1.0より大きい値が指定された場合、以下メッセージ出力
+"time for optimization metric (aka opt_t_weight) set to more than 1.0"
+
+• opt_e_weight：型:float、単位:なし、例:1.0、値域:0.0以上1.0以下の実数
+消費電力で最適化する割合(※1) 
+
+0.0より小さい値が指定された場合、以下メッセージ出力
+"epower for optimization metric (aka opt_e_weight) set to less than 0.0"
+1.0より大きい値が指定された場合、以下メッセージ出力
+"epower for optimization metric (aka opt_e_weight) set to more than 1.0"
+
+• opt_x_weight：型:float、単位:なし、例:1.0、値域:0.0以上1.0以下の実数
+経験コストで最適化する割合(※1) 
+
+0.0より小さい値が指定された場合、以下メッセージ出力
+"empirical cost for optimization metric (aka opt_x_weight) set to less than 0.0"
+1.0より大きい値が指定された場合、以下メッセージ出力
+"empirical cost for optimization metric (aka opt_x_weight) set to more than 1.0"
+
+(※1)opt_d_weightとopt_t_weightとopt_e_weightとopt_x_weightの合計は
+1.0とすること
+
+• hetero_file：未使用のため説明省略、Noneを設定
+
+• non_violation_vehicles_route：未使用のため説明省略、{}を設定
+
+• atpen：未使用のため説明省略、0.0を設定
+
+• aload：未使用のため説明省略、0.0を設定
+
+• distfile：未使用のため説明省略、Noneを設定
+
+• timefile：未使用のため説明省略、Noneを設定
+
+• e_cost_file：未使用のため説明省略、Noneを設定
+
+• x_cost_file：未使用のため説明省略、Noneを設定
+
+• ds_file：未使用のため説明省略、Noneを設定
+
+• ts_file：未使用のため説明省略、Noneを設定
+
+• es_file：未使用のため説明省略、Noneを設定
+
+• xs_file：未使用のため説明省略、Noneを設定
+
+• dsv_file：未使用のため説明省略、Noneを設定
+
+• tsv_file：未使用のため説明省略、Noneを設定
+
+• esv_file：未使用のため説明省略、Noneを設定
+
+• xsv_file：未使用のため説明省略、Noneを設定
+
+• pickup_flag：内部処理変数のため説明省略、Falseを設定
+
+• skillshuffle_flag：内部処理変数のため説明省略、Falseを指定 
+
+• spot_input_file：未使用のため説明省略、Noneを設定
+
+• bulkShipping_flag：型:boolean
+True：bulkShipping(配送先をまとめて1つにする)を有効にする
+False：bulkShippingを無効にする
+
+• management_dtable：型:辞書のlist
+車両別時間別距離テーブル
+車両毎、時間枠毎の2地点距離テーブルが列挙されている
+参照する距離テーブルを、車両番号と時間枠の開始時刻で決定する
+構造：
+[
+{
+ 'vtype'      : '0',             ← 車両種別(※1)
+ 'start_time' : 0.0,             ← 時間枠の開始時刻(※2)
+ 'table': { .. }
+           }
+}, 
+{
+ 'vtype': 'common',
+ 'start_time': 0.0,
+ 'table': { .. }
+}
+]
+(※1）
+vtype：型:str
+車両種別(Vehicleの"vtype"の値)を設定
+0以上の数字の文字列とする
+時刻毎の車両共通テーブルの場合、"time_common"を設定(車両のワイルドカードに相当)
+全車両共通テーブルの場合、"common"を設定(時間帯のワイルドカードに相当)
+vtypeは昇順でなくても良い
+vtypeは連番でなくても良い
+"time_common"、"common"の設定は必須ではない
+(※2)
+start_time：型:float、単位:hour
+時間枠の開始時刻(営業開始時刻からの相対時刻)を設定
+終了時刻は次の時間枠のstart_time、次の時間枠が無い場合、営業終了時刻まで有効
+vtypeが"common"の場合は0.0を設定
+(※3)
+table：型:listのlist 
+例：3スポットの場合
+[[0,2,3],
+ [1,0,3],
+ [1,2,0]]
+2地点間の距離のテーブルを設定
+充電解を生成しない場合、Customerに設定したspotid(拠点、配送先)と
+Vehicleオブジェクトのenddepotに設定したspotid(拠点、配送先)の
+全組合わせを設定すること。充電解を生成する場合、後述する関数
+localsearch_evの引数e_spotsに設定したspotid(充電スポット)も加えた、
+(拠点、配送先、充電スポット)の全組合わせを設定すること。
+同一custno同士の組合わせは値0を格納すること。
+2地点間が通行不可の場合、値-1を格納すること。
+要素の縦軸、横軸の並びは、充電解を生成しない場合、Customerに設定したspotidと
+Vehicleのenddepotに設定したspotidを重複無しで辞書順に並べた順、
+充電解を生成する場合、上記spotidに、e_spotsに設定したspotidを加えたspotidを、
+重複無しで辞書順に並べた順とする。値は距離(単位:m)。
+値にアクセスする際は、上記spotidを重複無しで辞書順に並べた順でindex番号を作成し、
+そのindex番号でアクセスすること。
+要素の縦軸、横軸の数はspotidの数(充電解の場合充電スポット含む)と同じとなる。
+要素の縦軸、横軸の数がspotidの数(充電解の場合充電スポット含む)と同じでない場合、
+以下メッセージ出力
+"distance table (aka dtable) does not match spotid"
+(他の注意事項)
+距離テーブルを参照したい車両に対応するvtypeのアイテムがない場合、
+start_timeに対応するtime_commonのアイテムを参照するが、それもない場合、
+commonアイテムを参照する。何も参照するアイテムがない場合、
+エラーで終了し、以下メッセージ出力
+"distance table (aka dtable) does not exist"
+同じ設定(例:vtype,start_timeが同じ)のテーブルがある場合、以下メッセージ出力
+"same distance tables (aka dtable) exist"
+
+• management_ttable：型:辞書のlist
+車両別時間別時間テーブル
+構造は車両別時間別距離テーブルとまったく同じ
+vtypeは車両種別(Vehicleの"vtype"の値)を設定
+距離を格納する代わりに2地点間の時間(単位:hour)を格納する
+要素の縦軸、横軸の数がspotidの数(充電解の場合充電スポット含む)と同じでない場合、
+以下メッセージ出力
+"eta table (aka ttable) does not match spotid"
+何も参照するアイテムが無い場合、以下メッセージ出力
+"eta table (aka ttable) does not exist"
+同じ設定(例:vtype,start_timeが同じ)のテーブルがある場合、以下メッセージ出力
+"same eta tables (aka ttable) exist"
+
+• management_etable：型:辞書のlist
+車両別時間別消費電力テーブル
+構造は車両別時間別距離テーブルの構造に'etype'を追加
+[
+{
+ 'vtype'      : '0',             ← 車両種別
+ 'etype'      : '0',             ← 電動車両種別(※1)
+ 'start_time' : 0.0,             ← 時間枠の開始時刻
+ 'table': { .. }
+           }
+}
+]
+vtypeは車両種別(Vehicleの"vtype"の値)を設定
+時刻毎の車両共通テーブルの場合、"time_common"を設定(車両のワイルドカードに相当)
+全車両共通テーブルの場合、"common"を設定(時間帯のワイルドカードに相当)
+vtypeは昇順でなくても良い
+"time_common"、"common"の設定は必須ではない
+(※1)
+etypeは車両種別(Vehicleの"etype"の値)を設定
+距離を格納する代わりに2地点間の消費電力(単位:なし)を格納する
+充電解を作成しない場合、[]を設定
+要素の縦軸、横軸の数がspotidの数(充電解の場合充電スポット含む)と同じでない場合、
+以下メッセージ出力
+"epower table (aka etable) does not match spotid"
+何も参照するアイテムが無い場合、以下メッセージ出力
+"epower table (aka etable) does not exist"
+同じ設定(例:vtype,start_timeが同じ)のテーブルがある場合、以下メッセージ出力
+"same epower tables (aka etable) exist"
+
+• management_xtable：型:辞書のlist
+車両別時間別経験コストテーブル
+構造は車両別時間別距離テーブルとまったく同じ
+vtypeは車両種別(Vehicleの"vtype"の値)を設定
+(他の注意事項)
+通常は経験コストテーブルは一つなので、vtypeに"common"、start_timeに0.0を設定する
+距離を格納する代わりに2地点経験コスト(単位:なし)を格納する
+経験コストを利用しない場合、[]を設定
+要素の縦軸、横軸の数がCustomerオブジェクトのspotidの数と同じでない場合、
+以下メッセージ出力
+"empCost table (aka xtable) does not match spotid"
+何も参照するアイテムが無い場合、以下メッセージ出力
+"empCost table (aka xtable) does not exist"
+同じ設定(例:vtype,start_timeが同じ)のテーブルがある場合、以下メッセージ出力
+"same empCost tables (aka xtable) exist"
+
+(他の注意事項)
+上記4テーブルは時間区分が異なっていても構わない
+
+• vendfile：未使用のため説明省略、Noneを設定
+
+• vtimefile：未使用のため説明省略、Noneを設定
+
+• rejectve_file：未使用のため説明省略、Noneを設定
+
+• st_top：未使用のため説明省略、Noneを設定
+
+• spotid_list：未使用のため説明省略、[]を設定
+
+• starttime：型:"%Y/%m/%d %H:%M:%S"、例:"2000/1/1 0:00:00"
+4つのAPIで共通的に用いるVehicleオブジェクトリストの先頭要素のstartoptime(運用開始日時)を指定
+本時刻がソルバ基準日時(=時刻0)となる
+
+• endtime：内部処理変数のため説明省略、0.0を設定
+
+• delaystart_flag：型:boolean
+True：出発遅延を有効にし、待ち時間を削減した配送時間を出力する
+False：出発遅延を無効にする
+本設定は最適化処理は出発遅延を考慮せず行い、その最終出力に対してのみ遅延処理を行う
+最適化指標が悪化しても制約を破らず遅延が可能なら、出発遅延を行う
+
+• maxvisit_file：未使用のため説明省略、Noneを設定
+
+• multitrip_flag：型:boolean
+True：multitrip(回転配送＝配送途中で拠点に戻って再配送)を有効にする
+False：multitripを無効にする
+multitripモードとevplan(充電解作成)モードの同時指定は動作保証外
+同時指定がされた場合、以下メッセージ出力
+"both multitrip (aka  multitrip_flag) and evplan (aka evplan) set"
+
+• multitripv_file：未使用のため説明省略、Noneを設定
+
+• multitripc_file：未使用のため説明省略、Noneを設定
+
+• outputfile：未使用のため説明省略、""を設定
+
+• multithread_num：型:int、単位:なし、例:2、値域:0以上の整数
+本ソフトウェアを実行するCPUにおいて、並列実行するスレッド数を指定
+0が指定された場合、最大スレッド数に設定される
+最大スレッド数以上の指定がなされた場合、最大スレッド数に設定される
+0以上の整数以外が指定された場合、以下メッセージ出力
+"number of threads (aka multithread_num) must be 0 or positive integer"
+
+・timePenaltyType：型:str
+日時枠(営業日時・配送日時)の制約タイプを指定
+ソフト制約:"soft"
+ハード制約:"hard"
+"soft"、"hard"以外が指定された場合、以下メッセージ出力
+"type of time penalty (aka timePenaltyType) set to other than "soft" or "hard""
+
+・loadPenaltyType：型:str
+荷物量(以下Customerオブジェクトのdemメンバー)の制約タイプを指定
+ソフト制約:"soft"
+ハード制約:"hard"
+"soft"、"hard"以外が指定された場合、以下メッセージ出力
+"type of load penalty (aka loadPenaltyType) set to other than "soft" or "hard""
+
+・load2PenaltyType：型:str
+第2荷物量(以下Customerオブジェクトのdem2メンバー)の制約タイプを指定
+ソフト制約:"soft"
+ハード制約:"hard"
+"soft"、"hard"以外が指定された場合、以下メッセージ出力
+"type of load2 penalty (aka load2PenaltyType) set to other than "soft" or "hard""
+
+・timeLevelingPenaltyType：型:str
+配送時間のばらつき度合(APE,AE)の制約タイプを指定
+ソフト制約:"soft"
+ハード制約:"hard"
+"soft"、"hard"以外が指定された場合、以下メッセージ出力
+"type of time leveling penalty (aka timeLevelingPenaltyType) set to other than "soft" or "hard""
+
+・distLevelingPenaltyType：型:str
+配送距離のばらつき度合(APE,AE)の制約タイプを指定
+ソフト制約:"soft"
+ハード制約:"hard"
+"soft"、"hard"以外が指定された場合、以下メッセージ出力
+"type of distance leveling penalty (aka distLevelingPenaltyType) set to other than "soft" or "hard""
+
+・visitsLevelingPenaltyType：型:str
+配送件数のばらつき度合(APE,AE)の制約タイプを指定
+ソフト制約:"soft"
+ハード制約:"hard"
+"soft"、"hard"以外が指定された場合、以下メッセージ出力
+"type of visits leveling penalty (aka visitsLevelingPenaltyType) set to other than "soft" or "hard""
+
+・timePenaltyWeight：型:float、単位:なし、例:1.0、値域:0.0以上1000000000以下の実数
+日時枠(営業日時・配送日時)の違反重みを指定
+特に希望の値が無い場合、1000000000を設定
+timePenaltyTypeが"hard"の場合、指定された値は無視される
+0.0より小さい値が指定された場合、以下メッセージ出力
+"weight of time penalty (aka timePenaltyWeight) set to less than 0.0"
+1000000000より大きい値が指定された場合、以下メッセージ出力
+"weight of time penalty (aka timePenaltyWeight) set to more than 1000000000"
+
+・loadPenaltyWeight：型:float、単位:なし、例:1.0、値域:0.0以上1000000000以下の実数
+荷物量(以下Customerオブジェクトのdemメンバー)の違反重みを指定
+特に希望の値が無い場合、1000000000を設定
+loadPenaltyTypeが"hard"の場合、指定された値は無視される
+0.0より小さい値が指定された場合、以下メッセージ出力
+"weight of load penalty (aka loadPenaltyWeight) set to less than 0.0"
+1000000000より大きい値が指定された場合、以下メッセージ出力
+"weight of load penalty (aka loadPenaltyWeight) set to more than 1000000000"
+
+・load2PenaltyWeight：型:float、単位:なし、例:1.0、値域:0.0以上1000000000以下の実数
+第2荷物量(以下Customerオブジェクトのdem2メンバー)の違反重みを指定
+特に希望の値が無い場合、1000000000を設定
+load2PenaltyTypeが"hard"の場合、指定された値は無視される
+0.0より小さい値が指定された場合、以下メッセージ出力
+"weight of load2 penalty (aka load2PenaltyWeight) set to less than 0.0"
+1000000000より大きい値が指定された場合、以下メッセージ出力
+"weight of load2 penalty (aka load2PenaltyWeight) set to more than 1000000000"
+
+・timeLevelingPenaltyWeight：型:float、単位:なし、例:1.0、値域:0.0以上1000000000以下の実数
+配送時間のばらつき度合(APE,AE)の違反重みを指定
+特に希望の値が無い場合、1000000000を設定
+timeLevelingPenaltyTypeが"hard"の場合、指定された値は無視される
+0.0より小さい値が指定された場合、以下メッセージ出力
+"weight of time leveling penalty (aka timeLevelingPenaltyWeight) set to less than 0.0"
+1000000000より大きい値が指定された場合、以下メッセージ出力
+"weight of time leveling penalty (aka timeLevelingPenaltyWeight) set to more than 1000000000"
+
+・distLevelingPenaltyWeight：型:float、単位:なし、例:1.0、値域:0.0以上1000000000以下の実数
+配送距離のばらつき度合(APE,AE)の違反重みを指定
+特に希望の値が無い場合、1000000000を設定
+distLevelingPenaltyTypeが"hard"の場合、指定された値は無視される
+0.0より小さい値が指定された場合、以下メッセージ出力
+"weight of distance leveling penalty (aka distLevelingPenaltyWeight) set to less than 0.0"
+1000000000より大きい値が指定された場合、以下メッセージ出力
+"weight of distance leveling penalty (aka distLevelingPenaltyWeight) set to more than 1000000000"
+
+・visitsLevelingPenaltyWeight：型:float、単位:なし、例:1.0、値域:0.0以上1000000000以下の実数
+配送件数のばらつき度合(APE,AE)の違反重みを指定
+特に希望の値が無い場合、1000000000を設定
+visitsLevelingPenaltyTypeが"hard"の場合、指定された値は無視される
+0.0より小さい値が指定された場合、以下メッセージ出力
+"weight of visits leveling penalty (aka visitsLevelingPenaltyWeight) set to less than 0.0"
+1000000000より大きい値が指定された場合、以下メッセージ出力
+"weight of visits leveling penalty (aka visitsLevelingPenaltyWeight) set to more than 1000000000"
+
+※0508差分箇所追加(ここから)
+・sparePenaltyWeight：型:float、単位:なし、例:1.0、値域:0.0以上1000000000000以下の実数
+後述するVehichleオブジェクト内のreserved_v_flagにおける予備車両に荷物が割当てられた際の違反重みを指定
+後述するopt_unassigned_flagがFalseの場合、指定された値は無視される
+特に希望の値が無い場合、1000000000000を設定
+0.0より小さい値が指定された場合、以下メッセージ出力
+"weight of spare vehicle penalty (aka sparePenaltyWeight) set to less than 0.0"
+1000000000000より大きい値が指定された場合、以下メッセージ出力
+"weight of spare vehicle penalty (aka sparePenaltyWeight) set to more than 1000000000000"
+※0508差分箇所追加(ここまで)
+
+• time_error：型:float、単位:なし、例:1.0、値域:0.0以上の実数
+出力用変数、0.0を指定
+配送時間のばらつき度合(APE,AE)の違反値、0より大きければ違反ありを表す
+
+• dist_error：型:float、単位:なし、例:1.0、値域:0.0以上の実数
+出力用変数、0.0を指定
+配送距離のばらつき度合(APE,AE)の違反値、0より大きければ違反ありを表す
+
+• visits_error：型:float、単位:なし、例:1.0、値域:0.0以上の実数
+出力用変数、0.0を指定
+配送件数のばらつき度合(APE,AE)の違反値、0より大きければ違反ありを表す
+
+• delaystart2_flag：型:boolean
+True：出発遅延を有効にし、待ち時間の削減を最適化した配送時間を出力する
+False：出発遅延を無効にする
+本設定は出発遅延を考慮した最適化処理を行い、最終出力も出発遅延されたものとなるが、
+出発遅延より最適化指標の方が優先される
+
+• addtwspot_file：未使用のため説明省略、Noneを設定
+
+• demdivideunit_file：未使用のため説明省略、Noneを設定
+
+• rmpriority_file：未使用のため説明省略、Noneを設定
+
+• init_changecust：型:str
+割当済荷物(＝初期解入力荷物)全体の変更条件を指定
+変更は自由に可能:"free"
+変更は以下条件:"additive"
+他便へ移動不可、選択的配送の別候補への変更不可、便番号変更不可、前後関係変更不可、
+分割可、結合可、時間変更可
+"free"、"additive"以外が指定された場合、以下メッセージ出力
+"change mode of initial customers (aka init_changecust) set to other than "free" or "additive""
+
+※1027差分箇所追加(ここから)
+• ivnum：内部処理変数のため説明省略、0を指定
+
+• loaddivide_initfile：未使用のため説明省略、Noneを設定
+
+• break_interval：型:float、単位:minute、例:240
+休憩を取る間隔を指定する
+休憩設定が不要の場合、0を指定する
+配送先の受入開始までの待ち時間、荷作業時間、停車時荷作業固定時間は休憩に含まない
+0より小さい値が指定された場合、以下メッセージ出力
+"interval of break (aka break_interval) set to less than 0"
+
+• break_time：型:float、単位:minute、例:40
+休憩を取る際の時間(休憩開始から終了までの時間の長さ)を指定する
+休憩設定が不要の場合、0を指定する
+0より小さい値が指定された場合、以下メッセージ出力
+"time(duration) of break (aka break_time) set to less than 0"
+休憩のCustomerオブジェクト(後述)とArgvsのbreak_interval、break_timeの組合せの動作を示す
+┏━━━━━━━━━━━━━┳━━━━━━━┳━━━━━┳━━━━━┓
+┃休憩のCustomerオブジェクト┃break_interval┃break_time┃動作      ┃
+┣━━━━━━━━━━━━━╋━━━━━━━╋━━━━━╋━━━━━┫
+┃なし                      ┃0             ┃0         ┃パターン0 ┃
+┣━━━━━━━━━━━━━╋━━━━━━━╋━━━━━╋━━━━━┫
+┃なし                      ┃0             ┃0以外     ┃パターン0 ┃
+┣━━━━━━━━━━━━━╋━━━━━━━╋━━━━━╋━━━━━┫
+┃なし                      ┃0以外         ┃0         ┃パターン0 ┃
+┣━━━━━━━━━━━━━╋━━━━━━━╋━━━━━╋━━━━━┫
+┃なし                      ┃0以外         ┃0以外     ┃パターン3 ┃
+┣━━━━━━━━━━━━━╋━━━━━━━╋━━━━━╋━━━━━┫
+┃あり                      ┃0             ┃0         ┃パターン1 ┃
+┣━━━━━━━━━━━━━╋━━━━━━━╋━━━━━╋━━━━━┫
+┃あり                      ┃0             ┃0以外     ┃パターン1 ┃
+┣━━━━━━━━━━━━━╋━━━━━━━╋━━━━━╋━━━━━┫
+┃あり                      ┃0以外         ┃0         ┃パターン2 ┃
+┣━━━━━━━━━━━━━╋━━━━━━━╋━━━━━╋━━━━━┫
+┃あり                      ┃0以外         ┃0以外     ┃パターン2 ┃
+┗━━━━━━━━━━━━━┻━━━━━━━┻━━━━━┻━━━━━┛
+パターン0：休憩は取らない
+パターン1：休憩のCustomerオブジェクトのみに従って休憩を取る
+パターン2：休憩のCustomerオブジェクトに従い休憩を取るが、break_intervalの値を守るようにする(break_timeは無視)
+パターン3：break_intervalとbreak_timeの値を守るように休憩を内部で自動生成する
+※1027差分箇所追加(ここまで)
+
+• opt_unassigned_flag：型:boolean ※0508差分箇所追加
+True：ハード制約により正式車両で配送できない荷物の予備車両による配送と、
+      配送できる荷物の配送の両方を考慮した最適化を行い、割当て荷物のみを出力する
+False：ハード制約により配送できない未割当て荷物が発生する場合、エラー終了する
+
+
+----------------------------------------------------------------------
+Customer
+
+
+○ 説明
+
+拠点(車両の出発地点)、配送先(顧客)、充電スポット、休憩を格納するクラス ※1027差分箇所変更(休憩追加)
+設定はAPI呼び出しフロー前の初期設定時のみとし、API呼び出しフロー中は
+変更しないこと
+
+
+○ コンストラクタ
+def init(self,_custno,_spotid,_y,_x,_dem,_dem2,_ready,_due,_servt,
+_starttime,_reje_ve,_parkt_arrive,_parkt_open,_depotservt,_additionalcust,
+_demdivideunit,_requestType,_deny_unass,e_rate=0): ※0508差分箇所変更(_deny_unass追加)
+
+_custnoは以下custnoメンバーの説明参照
+
+_spotidは以下spotidメンバーの説明参照
+
+_yは以下yメンバーの説明参照
+
+_xは以下xメンバーの説明参照
+
+_demは以下demメンバーの説明参照
+
+_dem2は以下dem2メンバーの説明参照
+
+_readyは以下readyメンバーの説明参照
+
+_dueは以下dueメンバーの説明参照
+
+_servtは以下servtメンバーの説明参照
+
+_starttime：型:"%Y/%m/%d %H:%M:%S"、例:"2000/1/1 0:00:00"
+4つのAPIで共通的に用いるVehicleオブジェクトリストの先頭要素のstartoptime(運用開始日時)を指定
+本時刻がソルバ基準日時(=時刻0)となる
+
+_reje_veは以下reje_veメンバーの説明参照
+
+_e_rateは以下e_rateメンバーの説明参照
+
+_parkt_arriveは以下parkt_arriveメンバーの説明参照
+
+_parkt_openは以下parkt_openメンバーの説明参照
+
+_depotservtは以下depotservtメンバーの説明参照
+
+_additionalcustはadditionalcustメンバーの説明参照
+
+○ メンバ
+
+• custno：型:str
+拠点(車両の出発地点)、配送先(顧客)、充電スポット、最終訪問先、休憩の名前を ※1027差分箇所変更(休憩追加)
+指定するためのユニークな識別子
+拠点は"0"を指定
+配送先は正の整数値の文字列を指定(例："1","2"...)
+配送先の整数値は連番でなくてもよい
+配送先の整数値は格納順に増加しなくてもよい
+充電スポットは0以上の整数値の文字列の先頭に"e"を付与して指定(例："e0","e1"...)
+充電スポットの整数値は連番でなくてもよい
+休憩は0以上の整数値の文字列の先頭に"b"を付与して指定(例："b0","b1"...) ※1027差分箇所追加
+休憩は全て出力されるとは限らない(例:休憩取得開始時刻以前に仕事が終わる場合) ※1027差分箇所追加
+
+custnoに0、あるいは、正の整数値以外の文字列、あるいは、
+0以上の整数値の文字列の先頭に"e"を付与した文字列、あるいは、
+0以上の整数値の文字列の先頭に"b"を付与した文字列、 ※1027差分箇所追加
+以外が指定された場合、以下メッセージ出力
+"customer id (aka custno) set to other than 0 or positive integer or "e" + positive integer or "b" + positive integer"
+
+• y：未使用のため説明省略、0を設定
+
+• x：未使用のため説明省略、0を設定
+
+• requestType：型:str
+配送先の荷物の種類を指定
+配送:"DELIVERY"
+集荷:"PICKUP"
+充電スポット、最終訪問先、休憩の場合、 "DELIVERY"を指定する ※1027差分箇所追加
+"DELIVERY"、"PICKUP"以外が指定された場合、以下メッセージ出力
+"request type of load (aka requestType) set to other than "DELIVERY" or "PICKUP"
+
+• dem：型:float、単位:なし、例:100
+荷物量を、0以上の実数で指定
+充電スポットの場合、0を指定する
+最終訪問先、休憩の場合、指定されたdemは無視される ※1027差分箇所変更(休憩追加)
+0より小さい値が指定された場合、以下メッセージ出力
+"loading weight of package (aka dem) set to less than 0"
+
+• dem2：型:float、単位:なし、例:0
+第2荷物量を指定、詳細内容はdemと同じ
+0より小さい値が指定された場合、以下メッセージ出力
+"loading size of package (aka dem2) set to less than 0"
+
+(※1)
+荷物量指標はdem,dem2どちらかだけを使う設定はできない(必ず両方の設定が必要)
+積載制約を使わない指標は、全ての荷物量を0にする(後述する車両の積載量上限設定は何でも良い)
+
+• ready：型:"%Y/%m/%d %H:%M:%S"、例:"2000/1/1 0:00:00"
+配送先の受入れ開始時刻(荷下ろしもしくは集荷できる最も早い時刻)
+休憩の場合、休憩取得開始時刻(休憩開始できる最も早い時刻) ※1027差分箇所追加
+ 
+• due：型:"%Y/%m/%d %H:%M:%S"形式の文字列、例:"2000/1/1 0:00:00"
+配送先の受入れ終了時刻(荷下ろしもしくは集荷できる最も遅い時刻)
+休憩の場合、休憩取得終了時刻(休憩開始できる最も遅い時刻) ※1027差分箇所追加
+
+• servt：型:float、単位:minute、例:6
+配送先に配送する場合、荷卸し時間を指定
+配送先で集荷する場合、荷積み時間を指定
+充電スポットの場合、充電時間以外でとどまる時間を指定
+最終訪問先の場合、指定されたservtは無視される
+休憩の場合、休憩時間(休憩開始から終了までの時間の長さ)を指定 ※1027差分箇所追加
+
+• node：未使用のため説明省略、""を設定
+
+• e_rate：型:float、単位:1時間に充電できる充電量、例:10.0、
+          値域:0以上の実数
+充電スポットの充電レートを指定
+充電スポット以外の場合、0を指定
+0より小さい値が指定された場合、以下メッセージ出力
+"charging rate of charging stations (aka e_rate) set to less than 0"
+
+• spotid：型:str
+拠点(車両の出発地点)、配送先(顧客)、最終訪問先、充電スポット、休憩の場所を ※1027差分箇所変更(休憩追加)
+指定するためのユニークな識別子
+拠点は"0"を指定
+配送先は正の整数値の文字列を指定(例："1","2"...)
+配送先、最終訪問先の整数値は連番でなくてもよい
+配送先、最終訪問先の整数値は格納順に増加しなくてもよい
+充電スポットはcustnoと同じ値を指定
+配送先に"0"が設定されていた場合、以下メッセージ出力
+"spotid = "0" must be set to depot or last spot"
+充電スポットにcustnoと同じ値が設定されていない場合、以下メッセージ出力
+"spotid of CS_spot must be the same as customer id (aka custno) of CS_spot"
+休憩場所が任意の場合、""を指定 ※1027差分箇所追加
+
+• spotno：内部処理変数のため説明省略、0を指定
+
+• reje_ve：型:intのlist、例:[0,1]
+本Customerへ立寄不可の車両をVehicleオブジェクトのvehnoで指定
+記述順番は問わない
+立寄不可車両がない場合、[]を設定
+配送先、充電スポット、最終訪問先、休憩で指定可能 ※1027差分箇所変更(休憩追加)
+拠点(custno="0")のCustomerに立寄不可車両を指定してはいけない
+拠点に[]以外が設定されていた場合、以下メッセージ出力
+"depot, spot whose customer id (aka custno) = "0", has unvisitable vehicles (aka reje_ve)"
+
+• parkt_arrive：型:float、単位:minute、例:6、値域:0以上の実数
+拠点、配送先、最終訪問先、休憩での到着後停車時荷作業固定時間を指定 ※1027差分箇所変更(休憩追加)
+拠点、配送先、最終訪問先、休憩にて、その地点で荷物(荷物量=0含む)があればparkt_arriveを全体時間に計上する
+時間の計上は、到着後すぐとし、早着の場合、受入開始時間まで待たずに計上する
+配送先の受入れ終了時刻はこの時間を計上した時刻で判定する
+充電スポットの場合、指定されたparkt_arriveは無視する
+休憩スポットの場合、指定されたparkt_arriveは無視する ※1027差分箇所追加
+本値はスキル設定とは無関係とする(スキルが設定されても不変値とする)
+同一spotidの複数Customerが連続する場合、つまり、停車場所が1か所の場合、
+parkt_arriveは1回のみ、servtは合計されて、全体時間に計上される
+同一spotidに異なるparkt_arriveが指定されていた場合、以下メッセージ出力
+"same parking time (aka parkt_arrive) must be set to the same spot (aka spotid)"
+0より小さい値が指定された場合、以下メッセージ出力
+"parking time (aka parkt_arrive) set to less than 0"
+
+• parkt_open：型:float、単位:minute、例:6、値域:0以上の実数
+拠点、配送先、最終訪問先、休憩での受入開始後停車時荷作業固定時間を指定 ※1027差分箇所変更(休憩追加)
+拠点、配送先、最終訪問先、休憩にて、その地点で荷物(荷物量=0含む)があればparkt_openを全体時間に計上する
+時間の計上は、受入開始時間後とし、早着の場合、受入開始時間まで待ってから計上する
+配送先の受入れ終了時刻はこの時間を計上した時刻で判定する
+充電スポットの場合、指定されたparkt_openは無視する
+休憩スポットの場合、指定されたparkt_openは無視する ※1027差分箇所追加
+本値はスキル設定とは無関係とする(スキルが設定されても不変値とする)
+同一spotidの複数Customerが連続する場合、つまり、停車場所が1か所の場合、
+parkt_openは1回のみ、servtは合計されて、全体時間に計上される
+同一spotidに異なるparkt_openが指定されていた場合、以下メッセージ出力
+"same parking time (aka parkt_open) must be set to the same spot (aka spotid)"
+0より小さい値が指定された場合、以下メッセージ出力
+"parking time (aka parkt_open) set to less than 0"
+
+• depotservt：型:float、単位:minute、例:60、値域:0以上の実数
+拠点での作業時間を指定
+拠点での作業時間合計は、配送荷物の場合、
+現在の拠点出発後から次の拠点まで、もしくは、最終配送先までの、配送先の作業時間の合計となり、
+集荷荷物の場合、
+直前の拠点出発後から現在の拠点まで、もしくは、最終配送先までの、配送先の作業時間の合計となる
+集荷荷物の場合の最終訪問先での作業時間は、最終訪問先が拠点かどうかに関わらず、
+車両営業時間に計上する
+荷物がまとめられた場合、作業時間を合計する
+Vehicleオブジェクトにも拠点での作業時間が設定されている場合、
+合計の値を拠点での作業時間とする。
+parkt_openとdepotservtのイメージを以下に示す
+  @拠点---------->@配送①->@集荷①->@拠点----------->@配送②->@集荷②->@最終訪問先
+   荷作業固定時間                     荷作業固定時間                     荷作業固定時間
+  +配送①作業時間                    +集荷①作業時間                    +集荷②作業時間
+                                     +配送②作業時間
+0より小さい値が指定された場合、以下メッセージ出力
+"customer depot service time (aka depotservt) set to less than 0"
+
+・additionalcust：型:Customerオブジェクトのlist
+例:[Customer(custno="10001",ready="2000/1/2 0:00:00",due="2000/1/2 10:00:00",…),Customer(custno="10002",…)]
+(※1)引数指定に名前付き引数を用いなくても良い。
+選択的配送情報を指定
+選択的配送を使わない場合、[]を設定
+各オブジェクトの配送先の名前を指定するためのユニークな識別子(custno)は、
+本Customerオブジェクトのcustnoと同様、
+拠点(車両の出発地点)、配送先(顧客)、充電スポット、最終訪問先、休憩でユニークとすること ※1027差分箇所変更(休憩追加)
+各オブジェクトで選択的配送情報として設定できる項目は、
+受入れ開始時刻(ready)、受入れ終了時刻(due)、場所(spotid)、
+到着後停車時荷作業固定時間(parkt_arrive)、受入開始後停車時荷作業固定時間(parkt_open)の5つのメンバー
+それ以外のメンバー及び上記5メンバーでも選択的配送情報を設定しないメンバーは、
+本Customerオブジェクトで設定した情報と同じ値を設定すること(custnoは除く)
+同じ値が設定されない場合、動作保証しない
+各オブジェクトのadditionalcustメンバーは[]を設定すること
+[]が設定されない場合、動作保証しない
+拠点と充電スポットと最終訪問先に値が設定された場合、設定された値は無視される
+本Customerオブジェクトか、本リストの要素で指定されたCustomerオブジェクトのうち、
+最適などれか一つに配送を行い、その一つのみが出力される
+休憩に対して異なる受入れ開始時刻(ready)、受入れ終了時刻(due)が指定された場合、以下メッセージ出力 ※1202差分箇所追加
+"time (aka ready and due) of break additionalcust must be set to the same of original customer"
+
+• demdivideunit：型:int、単位:なし、例:2、値域:0以上の整数
+配送先の荷物の分割不可及び分割単位を指定
+分割不可を指定する場合、1、
+分割単位無しを指定する場合、0、
+分割できる数を指定する場合、2以上の整数、
+を設定すること
+拠点、最終訪問先、充電スポット、休憩に設定された値は無視される(荷物分割の対象外) ※1027差分箇所変更(休憩追加)
+分割された荷物の最終結果は、同じcustnoで別のCustomerオブジェクトとして出力され、
+荷物量はそれぞれ新しく分割されたもの、分割できる数は分割の結果に応じた数、
+その他の値は同じものが格納される
+本荷物分割は積載量違反が起こった場合に、違反分を分割して違反を削減するためものであり、
+違反の無い解の質向上を目指すものではない
+0もしくは1以上の整数値以外の値の場合、以下メッセージ出力
+"load dividing number (aka demdivideunit) must be 0 or positive integer"
+bulkShipping機能を使う場合は、全ての荷物を「1」に指定することとし、
+bulkShipping_flagがTrueで、どれかの荷物に「1」以外が指定された場合、以下メッセージ出力
+"all load dividing numbers (aka demdivideunit) must be 1 when bulkShipping (aka bulkShipping_flag) is true"
+分割荷物に異なる種類(配送or集荷)が指定された場合、以下メッセージ出力
+"load divided customers include wrong request type of load (aka requestType)"
+
+• changecust：型:str
+内部処理変数のため説明省略、"free"を設定
+
+• deny_unassigned_flag：型:boolean ※1202差分箇所追加
+True：opt_unassigned_flagがTrueの場合に、未割当て荷物の対象および予備車両の対象から除外する
+False：opt_unassigned_flagがTrueの場合に、未割当て荷物および予備車両に割り当てられることを可能とする
+opt_unassigned_flagがFalseの場合、本設定は無視される
+同一custnoのCustomerオブジェクトに対し、異なるflagが指定された場合、以下メッセージ出力
+"denying unassigned (aka deny_unassigned_flag) of same customer id (aka custno) must be set to same flag"
+additionalcustのCustomerオブジェクトに対し、オリジナルと異なるflagが指定された場合、以下メッセージ出力
+"denying unassigned (aka deny_unassigned_flag) of additionalcust must be set to the same of original customer"
+
+
+----------------------------------------------------------------------
+Vehicle
+
+
+○ 説明
+
+車両を格納するクラス
+設定はAPI呼び出しフロー前の初期設定時のみとし、API呼び出しフロー中は
+変更しないこと
+
+
+○ コンストラクタ
+def init(self,_vehno,_cap,_cap2,_evehicle_dict,_vtype,_etype,_enddepot,
+_maxvisit,_startoptime,_endoptime,_maxrotate,_depotservt,_rmpriority,
+_takebreak,_reserved_v_flag,argvs) ※0508差分箇所変更(_takebreak,_reserved_v_flag追加)
+
+_vehnoは以下vehnoメンバーの説明参照
+
+_capは以下capメンバーの説明参照
+
+_cap2は以下cap2メンバーの説明参照
+
+_evehicle_dictは以下参照
+_evehicle_dict：型:辞書
+電動車両の情報を格納する
+構造：
+{
+ 'E-CAPACITY'      : 0.0,             ← 電力容量、以下e_capacityメンバの説明参照
+ 'E-INITIAL'       : 0.0,             ← 初期電力量、以下e_initialメンバの説明参照
+ 'E-COST'          : 0.0,             ← 電費、以下e_costメンバの説明参照
+ 'E-MARGIN'        : 0.0,             ← 残電力マージン、以下e_marginメンバの説明参照
+}
+
+_vtypeは以下vtypeメンバーの説明参照
+
+_etypeは以下etypeメンバーの説明参照
+
+_enddepotは以下enddepotメンバーの説明参照
+
+_maxvisitは以下maxvisitメンバーの説明参照
+
+_startoptimeは以下startoptimeメンバーの説明参照
+
+_endoptimeは以下endoptimeメンバーの説明参照
+
+maxrotateは以下maxrotateメンバーの説明参照
+
+depotservtは以下depotservtメンバーの説明参照
+
+argvsはArgvsオブジェクトの説明参照
+
+
+○ メンバ
+
+• vehno：型:int、例:0、値域:0以上の整数
+車両を指定するためのユニークな識別子
+0始まりでなくて良い
+連番でなくて良い
+
+• cap：型:float、単位:なし、例:300、値域:0以上の実数
+車両の積載量上限を指定
+0より小さい値が指定された場合、以下メッセージ出力
+"max loading weight of vehicles (aka cap) set to less than 0"
+
+• cap2：型:float、単位:なし、例:300、値域:0以上の実数
+車両の第2積載量上限を指定
+0より小さい値が指定された場合、以下メッセージ出力
+"max loading size of vehicles (aka cap2) set to less than 0"
+
+• route：型:Customerオブジェクトのlist、例：[Customerオブジェクト1,Customerオブジェクト2,...] 
+出力用変数、[]を指定
+配送ルートで訪問する配送先を表すリスト
+Customerのクラスのオブジェクトを配送順に格納する
+配送先の識別子を取得する場合、各Customerオブジェクトのcusntnoメンバー指定
+例：['0', '253', '252', '0']
+
+• totalcost：型:float、単位:m、例:1000.0、値域:なし
+出力用変数、0.0を指定
+全配送ルートの拠点から拠点までの距離合計値
+
+• totalcost_wolast：型:float、単位:m、例:900.0、値域:なし
+出力用変数、0.0を指定
+全配送ルートの拠点から最後の配送先までの距離合計値
+
+• arr：型:floatのlist
+出力用変数、[]を指定
+配送ルートで訪問する配送先に到着する時刻を表すfloatのリスト
+先頭に格納されたVehicleオブジェクトの運用開始日時(後述)からの相対時間を
+配送順に格納する。マイナス値が格納される場合もある。
+単位は時間(hour)
+例：[0, 0.2253, 0.272, 0.4993]
+
+• load_onbrd：型:float、単位:なし、例:300.0、値域:なし
+出力用変数、0.0を指定
+出発時の荷物量合計
+
+• load_onbrd2：型:float、単位:なし、例:300.0、値域:なし
+出力用変数、0.0を指定
+出発時の第2荷物量合計
+
+• load_pickup：型:float、単位:なし、例:300.0、値域:なし
+出力用変数、0.0を指定
+集荷の荷物量合計
+
+• load_pickup2：型:float、単位:なし、例:300.0、値域:なし
+出力用変数、0.0を指定
+集荷の第2荷物量合計
+
+• opskill：内部処理変数のため説明省略、1.0を指定
+
+• drskill：内部処理変数のため説明省略、1.0を指定
+
+• rtid：未使用のため説明省略、Noneを設定
+
+• e_capacity：型:float、例:1.0、単位:なし、値域:0より大きい実数
+電動車両の電力容量を指定(※1)
+充電解を作成しない場合、何を指定してもよい
+
+• e_initial：型:float、例:1.0、単位:なし、値域:0より大きい実数
+電動車両の初期電力量を指定(※1)
+充電解を作成しない場合、何を指定してもよい
+
+• e_margin：型:float、例:1.0、単位:なし、値域:0より大きい実数
+電動車両の残電力マージンを指定(配送中に本値を下回らないようにする電力量)(※1)
+充電解を作成しない場合、何を指定してもよい
+
+(※1)上記3メンバーは以下の3条件を守ること
+e_capacity >= e_initial
+e_capacity > e_margin
+e_initial > e_margin
+
+e_capacity < e_initialの場合、以下メッセージ出力
+"max epower (aka e_capacity) < init epower (aka e_initial)"
+e_capacity = e_marginとe_capacity < e_marginの場合、以下メッセージ出力
+"max epower (aka e_capacity) <= marginal epower (aka e_margin)"
+e_initial = e_marginとe_initial < e_marginの場合、以下メッセージ出力
+"init epower (aka e_initial) <= marginal epower (aka e_margin)"
+
+• e_cost：未使用のため説明省略、1.0を設定
+
+• rem_batt：型:floatのlist
+出力用変数、[]を指定
+配送ルートで訪問する配送先を出発する際の残電力量を表すfloatのlist
+例：[8.0, 6.105, 4.84500000001, 3.963000000005, 3.554000000007] 
+
+• chg_batt：型:floatのlist
+出力用変数、[]を指定
+配送ルートで訪問する配送先及び充電スポットでの充電量を表すfloatのlist
+配送先の場合、0が格納される
+例：[0, 0, 4.0663839999999984, 0, 0]
+
+• chg_batt_dict：内部処理変数のため説明省略、{}を指定
+
+• slack_t：内部処理変数のため説明省略、[]を指定
+
+• time_pen：型:float、単位:hour、例:1.0、値域:0.0以上の実数
+出力用変数、0.0を指定
+車両の営業時間と配送先の受入れ時間の違反値合計、0より大きければ違反ありを表す
+
+• load_pen：型:float、単位:なし、例:1.0、値域:0.0以上の実数
+出力用変数、0.0を指定
+車両の積載量上限(cap)の違反値、0より大きければ違反ありを表す
+
+• load_pen2：型:float、単位:なし、例:1.0、値域:0.0以上の実数
+出力用変数、0.0を指定
+車両の第2積載量上限(cap2)の違反値、0より大きければ違反ありを表す
+ 
+ • enddepot：型:オブジェクト
+最終訪問先となるCustomerを設定、該当Customerオブジェクトを指定
+既存のCustomer(拠点、配送先、充電スポット)の指定、または、
+新規のCustomerの指定が可能
+既存Customerの場合、コピーオブジェクトを作成して指定すること
+既存Customerと同じ場所の場合に、別オブジェクトを作成し、任意のcustnoと
+任意のspotidと任意の受入れ開始時刻、任意の受入れ終了時刻を指定しても構わない。
+指定したCustomerオブジェクトのreje_veメンバーのvehnoに、
+本Vehicleオブジェクトのvehnoと同じものがある場合、以下メッセージ出力
+"end spot (aka enddepot) has unvisitable vehicles (aka reje_ve)"
+
+• direct_flag：内部処理変数のため説明省略、Falseを指定
+
+• vtype：型:str
+Argvsオブジェクトのmanagement_dtableメンバーを参照するためのvtypeを指定
+
+• etype：型:str
+Argvsオブジェクトのmanagement_etableメンバーを参照するためのvtypeを指定
+
+• startoptime：型:"%Y/%m/%d %H:%M:%S"、例："2021/1/12 10:00:00"
+運用開始日時を指定
+
+• endoptime：型:"%Y/%m/%d %H:%M:%S"、例："2021/1/12 12:00:00"
+運用終了日時を指定
+
+• starthour：内部処理変数のため説明省略、0.0を設定
+
+• endhour：内部処理変数のため説明省略、0.0を設定
+
+• delay_arr：型:floatのlist
+出力用変数、[]を指定
+出発遅延を実施した、配送ルートで訪問する配送先に到着する時刻を表すfloatのリスト
+出発遅延機能を使用しない場合、空リストとなる。
+先頭に格納されたVehicleオブジェクトの運用開始日時(後述)からの相対時間を
+配送順に格納する。マイナス値が格納される場合もある。
+単位は時間(hour)
+例：[2, 2.2253, 2.272, 2.4993]
+
+• maxvisit：型:int、例:5、値域:0以上の整数
+車両の訪問数上限を指定
+0が指定された場合、訪問数上限なしを意味する。
+配送先/集荷先となる顧客スポットのみをカウント対象とし，車両初期位置，
+出発地点となる拠点(DEPOT)，帰還地点となる任意スポット(拠点含む)，
+充電スポットはカウント対象としない．
+ある顧客スポットに再訪した場合は別カウントとする．
+ただし顧客スポットが連続している場合は移動がないため，別カウントとせず
+1件とする．
+以下例)
+1. 車両初期位置A
+2. 拠点B
+3. 顧客C
+4. 顧客D
+5. 顧客C
+6. 顧客C
+7. 充電場E
+8. 顧客D(帰還位置)
+→訪問件数は3(ステップ3・4・５のみがカウント対象)
+0以上の整数以外が指定された場合、以下メッセージ出力
+"max visits (aka maxvisit) must be 0 or positive integer"
+
+• delay_totalcost：型:float、単位:m、例:1000.0、値域:なし
+出力用変数、0.0を指定
+出発遅延を実施した場合の全配送ルートの拠点から拠点までの距離合計値
+
+• delay_totalcost_wolast：型:float、単位:m、例:900.0、値域:なし
+出力用変数、0.0を指定
+出発遅延を実施した場合の全配送ルートの拠点から最後の配送先までの距離合計値
+
+• delay_rem_batt：型:floatのlist
+出力用変数、[]を指定
+出発遅延を実施した場合の配送ルートで訪問する配送先を出発する際の残電力量を表すfloatのlist
+例：[8.0, 6.105, 4.84500000001, 3.963000000005, 3.554000000007] 
+
+• delay_chg_batt：型:floatのlist
+出力用変数、[]を指定
+出発遅延を実施した場合の配送ルートで訪問する配送先及び充電スポットでの充電量を表すfloatのlist
+配送先の場合、0が格納される
+例：[0, 0, 4.0663839999999984, 0, 0]
+
+• delay_chg_batt_dict：内部処理変数のため説明省略、{}を指定
+
+• delay_slack_t：内部処理変数のため説明省略、[]を指定
+
+• maxrotate：型:int、単位:なし、例:2、値域:0以上の整数
+車両の回転数上限を指定
+0が指定された場合、回転数上限なしを意味する。
+回転数上限2の場合、拠点⇒配送⇒拠点⇒配送⇒最終訪問先、が回転数最大の配送となる。
+0以上の整数以外が指定された場合、以下メッセージ出力
+"vehicle max rotate (aka maxrotate) must be 0 or positive integer"
+
+• depotservt：型:float、単位:minute、例:60、値域:0以上の実数
+拠点(出発拠点を含む)での作業時間を指定
+最終訪問先では計上しない。
+Customerオブジェクトにも拠点での作業時間が設定されている場合、
+合計の値を拠点での作業時間とする。
+0より小さい値が指定された場合、以下メッセージ出力
+"vehicle depot service time(aka depotservt) set to less than 0"
+
+• rmpriority：型:int、単位:なし、例:2、値域:0以上の整数
+車両の台数削減優先度を指定
+0:削減不可
+1:削減優先度低
+2:削減優先度高
+1か2を設定する車両がある場合、Argvsオブジェクトのdecr_vnumメンバーはTrueにすること
+1か2を設定する車両がある場合で、Argvsオブジェクトのdecr_vnumメンバーがFalseの場合、
+1,2の設定は無視されて0として実行される
+0,1,2以外が指定された場合、以下メッセージ出力
+"vehicle remove priority (aka rmpriority) must be 0 or 1 or 2"
+
+ • takebreak：型:Customerオブジェクトのlist ※1027差分箇所追加
+休憩を取るべきCustomerを設定、該当Customerオブジェクトを指定
+休憩を指定しない場合、[]を設定
+本Customerオブジェクトに指定された休憩を取得する計画を作成する
+休憩以外のCustomerオブジェクトが指定された場合、以下メッセージ出力
+"setting break (aka takebreak) must be set to break customer object"
+
+• reserved_v_flag：型:boolean ※0331差分箇所追加
+True：次回以降の配送のための予備車両を示す
+False：今回の配送に使用する通常車両を示す
+Trueの場合、その車両の荷物は今回の配送では配送されないが、
+次回以降の配送も含めた最適化が行われる
+Trueの車両も荷物が割当てられた場合、計画は出力される
+opt_unassigned_flagがFalseの場合、本設定は無視される
+
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+関数
+
+
+----------------------------------------------------------------------
+adjust_nveh_construction_I2(customers,e_spots,vehicles,ivnum,_nbflag,
+skills,argvs)
+
+
+○ 機能概要
+
+初期ルートを作成し、vehiclesに格納する
+
+
+○ 引数
+
+customers：Customer クラスのインスタンスのリスト
+拠点、全ての配送先を格納する
+リストの先頭要素のCustomerのcustnoは"0"(拠点)でなければならない
+customersの中に配送先が1つ以上含まれていなければならない
+customersの中に充電スポットを含んではいけない
+
+e_spots：充電スポットのみのCustomer クラスのインスタンスのリスト
+充電解を作成する場合、利用候補となる充電スポットを全て格納する
+充電解を作成しない場合、[]を指定する
+充電スポット以外を格納しないこと
+充電スポット以外が格納されている(custnoで判定)場合、以下メッセージ出力
+"CS_spots include something not "e" + positive integer"
+
+• vehicles：Vehicle クラスのインスタンスのリスト
+vehiclesの中に車両が1つ以上含まれていなければならない
+台数固定モードの場合、vehiclesの中に台数分の車両を含めること
+台数削減モードの場合、vehiclesの中に最大台数分の車両を含めること
+
+• ivnum：使用する車両の台数
+
+1以上の整数値
+台数固定モードの場合、固定台数を設定
+台数削減モードの場合、最大台数を設定
+本値とvehiclesの要素(車両)数を同じ値にすること
+1以上の整数値以外の値の場合、以下メッセージ出力
+"vehicle number (aka ivnum) set to other than 0 or positive integer"
+vehiclesの要素(車両)数と値が異なる場合、以下メッセージ出力
+"vehicle number (aka ivnum) differs from vehicle class length"
+
+• _nbflag：内部処理変数のため説明省略
+
+NbFlag(True,True,True,True,False)を設定
+
+• skills：スキル機能の有効・無効
+
+スキル機能無効の場合、Noneを指定
+スキル機能有効の場合、各車両のスキルの設定をlistのlistで指定 
+リスト中の各リストが車両1台に相当する
+例：
+[
+ ['route0','1.5','0.6'], <-車両名(※1),荷作業スキル係数(※2),運転スキル係数(※3)
+ ['route1','1.5','0.6']
+]
+(※1）
+車両名：型:str
+車両名は無視される。なので、空でも重複しても良い。
+
+(※2)
+荷作業スキル係数：型:float、単位:なし、値域:0以上の実数
+荷作業に関するドライバの能力(値が大きいほど能力が低い)を表し、
+本能力に従って配送計画を作成する。
+本値は引数customerのservtメンバーの値に乗算される。
+回転配送が有効の場合(multitrip_flag=True)、 引数customersのdepotservtメンバーの値、
+および、引数vehiclesのdepotservtメンバーの値にも乗算される。
+0より小さい値を指定した場合、以下メッセージ出力
+"delivery skill (aka opskill) set to less than 0.0"
+
+(※3)
+運転スキル係数：型:float、単位:なし、値域:0以上の実数
+車両移動に関するドライバの能力(値が大きいほど能力が低い)を表し、
+本能力に従って配送計画を作成する。
+本値は引数vehiclesの2地点時間テーブルの時間の値に乗算される。
+0より小さい値を指定した場合、以下メッセージ出力
+"driving skill (aka drskill) set to less than 0.0"
+
+(他の注意事項)
+引数vehiclesのlength(車両数)と本リストのlength(車両数)は同じとすること。
+
+ArgvsオブジェクトのskillfileがNoneで、本指定がNoneでない場合、以下メッセージ出力
+"skills argument must be set to none when skillfile field of Argvs object set none"
+
+#(内部処理)
+#スキルは、skillsに格納された先頭から順番に、
+#引数vehicles中の先頭Vehicleから、荷作業スキル係数がそのopskillメンバーに、
+#運転スキル係数がdrskillメンバーに格納される。
+#(skillsの各リストの先頭要素(車両名)はvehiclesへの格納時に参照されない)
+
+• argvs：Argvs クラスのインスタンス
+
+設定の仕方については共通変数Argvsを参照すること
+
+
+○ 返値
+
+NbFlag クラスのインスタンス：未使用のため説明省略
+
+拠点、全ての配送先を格納する Customer クラスのインスタンスのリストcustomers
+
+
+○ 機能詳細
+
+作成した初期解は配送計画出力要件を満たしている
+
+初期解の配送ルートは引数vehiclesの各Vehicleのrouteメンバーに格納される
+
+初期解の配送先到着時刻は引数vehiclesの各Vehicleのarrメンバーに格納される
+
+使用する車両数が配送先数より多い場合、vehiclesのリスト長はivnumの数となる
+多い分のVehicleのrouteは['0', '0']、arrは[0.0, 0.0]となる
+
+制約を守れない場合でも、全配送先を含む初期解を必ず生成する(ソフト制約指定の場合)
+扱う制約の種類は、
+車両営業時間枠制約、配送先受入れ時間枠制約、APE制約、積載量制約(2種類)
+
+充電解は作らない
+
+通行不可・車両立寄不可が原因で初期解生成できない場合、以下メッセージ出力
+"failed to create initial solution due to cost of -1 or unvisitable vehicles"
+
+訪問数上限が原因で初期解生成できない場合、以下メッセージ出力
+"failed to creat initial solution due to max visits"
+
+初期解生成途中に早期打ち切りが発生した場合、以下メッセージ出力
+"failed to create initial solution due to timeout"
+
+#(内部処理)
+#同一spotidの配送先の荷物合計が、訪問可能な最大積載量車両の積載量を
+#上回る場合、該当spotidのみに訪問する荷物満載の車両を解として採用する。
+#本車両はAPEの対象外とする。
+#本車両は充電最適化の対象外とする。
+#
+#現在日付がis_expired()関数内で指定した利用期限を過ぎている場合、以下メッセージ出力
+#"license expired"
+
+
+----------------------------------------------------------------------
+set_initroutes2(_custs,e_spots,_vehs,_nbflag,iniroutes,skills,argvs)
+
+
+○ 機能概要
+
+初期ルートを引数で与え、初期解として_vehsに格納する
+
+
+○ 引数
+
+• _custs：adjust_nveh_construction_I2のcustomersと同じ
+
+• e_spots：adjust_nveh_construction_I2のe_spotsと同じ
+
+• _vehs : adjust_nveh_construction_I2のvehiclesと同じ
+
+• _nbflag : adjust_nveh_construction_I2の_nbflagと同じ
+
+• iniroutes：初期解となる拠点・配送先のリストのリスト
+例：
+[
+  ["v1", "0", "1", "2", "0"] <-車両v1の計画、0->1->2->0に訪問するの意味
+  ["v2", "0", "3", "4", "0"] <-車両v2の計画
+  ["v3", "0", "5", "0"] <-車両v3の計画
+]
+車両名は無視される。なので、空でも重複しても良い。
+訪問先のIDは整数値の文字列とする
+訪問先のIDが整数値の文字列以外の場合、以下メッセージ出力
+"customer id (aka custno) set to not as string of integer"
+最初と最後に記述された訪問先以外の全IDは引数_custsの全custnoに
+全て含まれている必要がある
+最初と最後に記述された訪問先以外の全IDが引数_custsの全custnoに
+全て含まれていない場合、以下メッセージ出力
+"all custno of customer class (aka _custs) must include all customer id (aka custno) of iniroutes"
+リスト中の各リストが車両1台に相当する
+配送先の無い空車両も指定可能、空車両は車両名のみとする
+例：
+[
+  ["v1"] <-車両v1は空車両
+  ["v2", "0", "3", "4", "0"] <-車両v2の計画
+]
+iniroutesの台数(length)は_vehsの台数(length)以下とすること
+iniroutesの台数(length)が_vehsの台数(length)以下でない場合、
+以下メッセージ出力
+"initial solution (aka iniroutes) length is more than length of vehicle class (aka _vehs)"
+iniroutesに定義されていない車両は空車両として扱う([]だけの指定も可)
+空車両でない場合、訪問先の数は3以上とすること
+訪問先の数が2以下の場合、以下メッセージ出力
+"initial solution (aka iniroutes) includes plan without customers"
+荷物分割されたCustomerの入力は、共通するcustomer idで設定され、
+格納車両の先頭から、また、車両内に複数ある場合、配送順の早い順番で、
+_custs中の先頭Customerオブジェクトから順番に割り当てられる。
+例：
+iniroutesが以下の場合("2"が、3つに分割されたcustmer id=2の荷物)
+[
+  ["v1", "0", "1", "2", "0", "2", "0"]
+  ["v2", "0", "3", "4", "2", "0"]
+]
+1番目のVehicleの2番目の配送先である"2"(=custmer id)に対して、
+_custsに登録された1番目のcustmer id=2のCustomerオブジェクトが割り当てられ、
+1番目のVehicleの3番目の配送先である"2"(=custmer id)に対して、
+_custsに登録された2番目のcustmer id=2のCustomerオブジェクトが割り当てられ、
+2番目のVehicleの3番目の配送先である"2"(=custmer id)に対して、
+_custsに登録された3番目のcustmer id=2のCustomerオブジェクトが割り当てられる。
+荷物分割されたCustomerオブジェクトの設定に不具合(例:demdivideunitの値に矛盾がある)
+がある場合、以下メッセージ出力
+"load divided customers include wrong parameters"
+荷物分割されたCustomerオブジェクトの訪問が連続する場合、以下メッセージ出力
+"load divided customers are succesive"
+iniroutesで定義される訪問先のCustomerオブジェクト割り当てについては、
+先頭車両の先頭訪問先から訪問順に、
+_custsで定義されるCustomerオブジェクトの先頭から、
+対応するcustomer id (aka custno)のCustomerオブジェクトが割り当てられる
+例：
+iniroutes:
+[
+  ["v1", "0", "1", "0"]
+  ["v2", "0", "2", "0"]
+]
+_cust:
+[CustomerA(custno=0),CustomerB(custno=1),CustomerC(custno=2),CustomerD(custno=2)]
+の場合、
+"v1"の"1"は、CustomerB(custno=1)が、
+"v2"の"2"は、CustomerC(custno=2)が、
+割り当てられる
+
+• skills：adjust_nveh_construction_I2のskillsと同じ 
+
+• argvs：Argvs クラスのインスタンス
+
+設定の仕方については共通変数Argvsを参照すること
+
+
+○ 返値
+
+NbFlag クラスのインスタンス：未使用のため説明省略
+
+拠点、全ての配送先を格納する Customer クラスのインスタンスのリスト_custs
+
+
+○ 機能詳細
+
+初期ルートは、iniroutesに格納された先頭から順番に、
+_vehs中の先頭Vehicleから、そのrouteメンバーに格納される
+(iniroutesの各リストの先頭要素(車両名)は_vehsへの格納時に参照されない)
+
+Vehicleにenddepotとして最終訪問先が指定されている場合、
+enddepotの指定が優先される
+
+初期解の配送先到着時刻を_vehsの各Vehicleのarrメンバーに格納する
+
+使用する車両数が配送先数より多い場合、_vehsのリスト長はivnumの数となる
+
+制約を守れない場合でも、全配送先を含む初期解を必ず生成する(ソフト制約指定の場合)
+扱う制約の種類は、
+車両営業時間枠制約、配送先受入れ時間枠制約、APE制約、積載量制約(2種類)
+ただし、通行不可・車両立寄不可のため初期解が読み込めない場合、かつ、
+Argvsオブジェクトのopt_unassigned_flagがFalseの場合のみ、 ※1202差分箇所変更(条件追加)
+初期解を生成せず、以下メッセージ出力
+"failed to read initial solution due to cost of -1"
+"failed to read initial solution due to unvisitable vehicle"
+
+車両の回転数上限のため初期解が読み込めない場合、かつ、
+Argvsオブジェクトのopt_unassigned_flagがFalseの場合のみ、 ※1202差分箇所変更(条件追加)
+初期解を生成せず、以下メッセージ出力
+"failed to read inital routes due to maxrotate"
+
+充電解は作らない
+
+引数で与える初期ルートは配送計画出力要件を守る必要がある
+(守らない場合、動作保証しない)
+
+引数で与える初期ルートには充電スポットを含んではいけない
+(含む場合、動作保証しない)
+
+#(内部処理)
+#現在日付がis_expired()関数内で指定した利用期限を過ぎている場合、以下メッセージ出力
+#"license expired"
+
+
+----------------------------------------------------------------------
+localsearch_dtable(customers,vehicles,nbflag,ivnum,skills,argvs)
+
+○ 機能概要
+
+vehicles の各要素(車両)の配送ルートを改善するために局所探索を実行する
+
+○ 引数
+
+• customers：Customer クラスのインスタンスのリスト
+
+前段のadjust_nveh_construction_I2実行後の返値のcustomersもしくは
+前段のset_initroutes2実行後の返値の_custsをそのまま渡すこと
+
+• vehicles : Vehicle クラスのインスタンスのリスト
+
+前段のadjust_nveh_construction_I2実行後のvehiclesもしくは
+前段のset_initroutes2実行後の_vehsをそのまま渡すこと
+
+• nbflag : 内部処理変数のため説明省略
+
+NbFlag(True,True,True,True,True)を設定
+
+• ivnum：使用する車両の台数
+
+1以上の整数値
+台数固定モードの場合、固定台数を設定
+台数削減モードの場合、最大台数を設定
+本値とvehiclesの要素(車両)数を同じ値にすること
+1以上の整数値以外の値の場合、以下メッセージ出力
+"vehicle number (aka ivnum) set to other than 0 or positive integer"
+vehiclesの要素(車両)数と値が異なる場合、以下メッセージ出力
+"vehicle number (aka ivnum) differs from vehicle class length"
+
+• skills : adjust_nveh_construction_I2のskillsと同じ
+
+前段のadjust_nveh_construction_I2実行後のskillsもしくは
+前段のset_initroutes2実行後のskillsをそのまま渡すこと
+
+• argvs：Argvs クラスのインスタンス
+
+adjust_nveh_construction_I2実行後のargvsもしくは
+set_initroutes2実行後のargvsをそのまま渡すこと
+
+
+○ 返値
+
+Vehicle クラスのインスタンスのリストoRetVehicles
+
+拠点、全ての配送先を格納する Customer クラスのインスタンスのリストcustomers
+
+○ 機能詳細
+
+出力した配送ルートは配送計画出力要件を満たしている
+
+配送ルートはoRetVehiclesの各Vehicleのrouteメンバーに格納される
+
+配送先到着時刻はoRetVehiclesの各Vehicleのarrメンバーに格納される
+
+使用する車両数が配送先数より多い場合、出力するoRetVehiclesのリスト長が
+配送先数分の長さ以下になる
+
+制約を守れない場合でも、全配送先を含む解を必ず生成する(ソフト制約指定の場合)
+扱う制約の種類は、
+車両営業時間枠制約、配送先受入れ時間枠制約、APE制約、積載量制約(2種類)
+ただし、ハード制約の項目があり制約違反の解になる場合、以下メッセージ出力
+"failed to create solution due to hard constraint"
+
+充電解は作らない
+
+#(内部処理) 
+#全車両の距離テーブル同士、時間テーブル同士、消費電力テーブル同士が
+#全く同じ場合、スキルシャッフルによる時間最適化を行う
+#
+#現在日付がis_expired()関数内で指定した利用期限を過ぎている場合、以下メッセージ出力
+#"license expired"
+
+
+----------------------------------------------------------------------
+localsearch_ev(custs3, vehs, e_spots, argvs)
+
+
+○ 機能概要
+
+vehicles の各要素(車両)の配送ルートに対して電欠を起こさない解を作成し、
+さらに改善するために局所探索を実行する
+
+
+○ 引数
+
+• custs3：Customer クラスのインスタンスのリスト
+
+前段のlocalsearch_dtable実行後のcustomersをそのまま渡すこと
+
+• vehicles : Vehicle クラスのインスタンスのリスト
+
+前段のlocalsearch_dtable実行後のvehiclesをそのまま渡すこと
+
+• e_spots：Vehicleオブジェクト作成時のe_spotsをそのまま渡すこと
+
+• argvs：Argvs クラスのインスタンス
+
+前段のlocalsearch_dtable実行後のargvsをそのまま渡すこと
+
+
+○ 返値
+
+(custs3, oRetVehicles)
+custs3(未使用)
+oRetVehicles：Vehicle クラスのインスタンスのリスト
+
+
+○ 機能
+
+出力した配送ルートは配送計画出力要件を満たしている
+
+充電配送ルートはoRetVehiclesの各Vehicleのrouteメンバーに格納される
+
+配送先及び充電スポット到着時刻はoRetVehiclesの各Vehicleのarrメンバーに
+配送ルートの順に格納される
+
+配送先及び充電スポットを出発する際の残電力量はoRetVehiclesの各Vehicleの
+rem_battメンバーに配送ルートの順に格納される
+
+充電スポットでの充電量はoRetVehiclesの各Vehicleのchg_battメンバーに
+配送ルートの順に格納される(配送先の場合、充電量の値0が格納される)
+
+使用する車両数が配送先数より多い場合、出力するoRetVehiclesのリスト長が
+配送先数分の長さ以下になる
+
+使用する車両数が配送先数より多い場合、かつ、スキル機能が有効の場合、
+どのスキル設定の車両を利用するかの指定はできない
+
+制約を守れない場合でも、全配送先を含む解を必ず生成する(ソフト制約指定の場合)
+扱う制約の種類は、
+車両営業時間枠制約、配送先受入れ時間枠制約、APE制約、積載量制約(2種類)、残電力量制約
+ただし、ハード制約の項目があり制約違反の解になる場合、以下メッセージ出力
+"failed to create solution due to hard constraint"
+
+#(内部処理)
+#現在日付がis_expired()関数内で指定した利用期限を過ぎている場合、以下メッセージ出力
+#"license expired"

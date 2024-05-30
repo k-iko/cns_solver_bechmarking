@@ -1,0 +1,1 @@
+max visits (aka maxvisit) must be 0 or positive integer (maxvisit = -1)

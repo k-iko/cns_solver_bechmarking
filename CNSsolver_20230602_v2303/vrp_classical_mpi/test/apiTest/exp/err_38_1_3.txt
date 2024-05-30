@@ -1,0 +1,1 @@
+vehicle max rotate (aka maxrotate) must be 0 or positive integer (maxrotate = -1)

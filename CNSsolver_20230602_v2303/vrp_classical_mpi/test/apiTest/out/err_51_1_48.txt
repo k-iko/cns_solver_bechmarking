@@ -1,0 +1,1 @@
+denying unassigned (aka deny_unassigned_flag) of same customer id (aka custno) must be set to same flag (custno = 1)

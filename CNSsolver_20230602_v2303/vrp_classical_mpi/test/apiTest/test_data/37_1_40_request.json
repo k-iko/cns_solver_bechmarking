@@ -1,0 +1,15 @@
+{
+"main":"main_tw.py",
+"-i":"../../../data/DSS_FORMAT_02-0input_50.csv",
+"-d":"../../../data/DSS_FORMAT_02-0dist.csv",
+"-t":"../../../data/DSS_FORMAT_02-0time.csv",
+"-v":"4",
+"-vend":"../../../data/vendcust2.csv",
+"-si":"../../../data/spotid2.csv",
+"-s":"2000/1/1 9:00:00",
+"-e":"2000/1/1 17:00:00",
+"-opt_x":"",
+"-x":"../../../data/x-cost.csv",
+"-xsv":"../../../data/x-costsv.csv",
+"-o":"output_37_1_40.csv"
+}

@@ -1,0 +1,1 @@
+empCost table (aka xtable) does not match spotid (len(xtable) = 3, number of spotid = 2)

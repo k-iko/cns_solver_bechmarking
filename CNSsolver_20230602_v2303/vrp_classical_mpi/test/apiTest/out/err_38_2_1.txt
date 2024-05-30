@@ -1,0 +1,1 @@
+vehicle depot service time (aka depotservt) set to less than 0 (depotservt = -0.016666666666666666)

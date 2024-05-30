@@ -1,0 +1,24 @@
+
+■python3.9.8インストール
+https://www.python.org/downloads/release/python-398/
+　⇒「Windows installer (64-bit)」を選択しインストール
+
+■ライブラリ統一
+pip install -r requirements.txt --proxy http://10.77.8.70:8080
+
+■TortoiseGit
+1.インストール
+https://qiita.com/SkyLaptor/items/6347f38c8c010f4d5bd2
+2.ソースコード取得
+2-1.GitClone
+　エクスプローラー上を右クリック
+  「Git Clone」押下
+  URL:http://pmts.pmcrd.mei.co.jp/gitlab/2020/qc-solver/vrp_classical.git
+  Directory:C:\xxx
+　　⇒xxx:任意のディレクトリ
+2-2.ブランチ切り替え
+　エクスプローラー上を右クリック
+　TortoiseGit⇒Switch/Checkout...
+　Branch：feature_APITest
+　　⇒上記を選択しOKボタン押下
+
