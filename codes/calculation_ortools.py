@@ -158,7 +158,7 @@ def draw_solution(data, manager, routing, solution, fig_name='output.png'):
 
 
 # define solver of or tools
-def ORtools(instance_name):
+def ORtools(instance_name, cust_name):
     # %% [markdown]
     data = {}
     data["distance_matrix"] = distance_df.pivot_table(
@@ -263,7 +263,16 @@ def ORtools(instance_name):
     search_parameters.first_solution_strategy = (
         routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_INSERTION
     )
+    search_parameters.log_search = True
 
+    # log_searchの内容を取得
+    log_search_content = str(search_parameters).encode("utf-8")
+
+    # log_searchの内容をtxtファイルに保存する
+    with open(
+        f"/results/simulation/{cust_name}/{instance_name}_log_ortools.txt", "wb"
+    ) as file:
+        file.write(log_search_content)
     # %%
     # Solve the problem.
     start_time = time.time()
@@ -434,4 +443,4 @@ if __name__ == "__main__":
             distance_df = makeDistance(instance_df, ins)
             input_df = makeInput(instance_df, ins)
             conf_df = makeConfig(ins)
-            ORtools(ins)
+            ORtools(ins, cust)
