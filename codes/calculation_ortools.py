@@ -18,19 +18,6 @@ from ortools.constraint_solver import pywrapcp
 file_path = {}
 num_cust = ["100cust", "200cust", "400cust", "600cust", "800cust", "1000cust"]
 
-# # %% make instance list
-# # RESULT_DIR_PATH = 'result/100cust'
-# DATA_DIR_PATH = "data/cust_data/100cust/total"
-# SAVE_DIR_PATH = "data/cust_data/100cust"
-# INSTANCE_NAMES = []
-# for file_name in os.listdir(DATA_DIR_PATH):
-#     print(file_name)
-#     if file_name.endswith(".txt"):
-#         name_without_extension, extension = os.path.splitext(file_name)
-#         if extension == ".txt":
-#             INSTANCE_NAMES.append(name_without_extension)
-# print(INSTANCE_NAMES)
-
 
 # %%
 # make instance list
