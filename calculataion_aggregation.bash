@@ -33,7 +33,6 @@ mv simu_cns/*.txt simu_cns/ini_result
 
 # ortoolsで最適化計算を実行
 python codes/calculation_ortools.py
-#TODO:logの出力先の指定
 
 # ソルバーごとの計算結果および最適化解との比較(総距離、台数削減、計算時間)を実行
 python codes/compare_results.py
