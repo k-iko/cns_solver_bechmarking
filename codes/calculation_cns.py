@@ -18,25 +18,6 @@ num_cust = ["100cust", "200cust", "400cust", "600cust", "800cust", "1000cust"]
 file_path = {}
 
 
-# search only files in the directory
-def check_exists(directory, partial_name):
-    for file in os.listdir(directory):
-        if os.path.isfile(os.path.join(directory, file)) and partial_name in file:
-            return True  # 部分一致するファイルが存在する場合
-    return False  # 部分一致するファイルが存在しない場合
-
-
-# # %% make instance list
-# # RESULT_DIR_PATH = 'result/100cust'
-# SAVE_DIR_PATH = "DATA/cust_data/400cust"
-# INSTANCE_NAMES = ["R2_4_9"]
-# # for file_name in os.listdir(SAVE_DIR_PATH):
-# #     if file_name.endswith('.txt'):
-# #         name_without_extension, extension = os.path.splitext(file_name)
-# #         if extension == '.txt':
-# #             INSTANCE_NAMES.append(name_without_extension)
-
-
 # %%
 # make instance list
 def readTestdata(instance_name):
@@ -136,7 +117,8 @@ def makeConfig(instance_name):
 
 
 # define solver of cns
-def CNSsolver(instance_name):
+# TODO check the solver
+def CNSsolver(cust_name, instance_name):
     # make distance data
     time_df = distance_df[["START", "END", "METERS"]]
     time_df["HRS"] = time_df["METERS"] / (60 * 1000)
@@ -164,7 +146,7 @@ def CNSsolver(instance_name):
     std_out = subprocess.check_output(
         [
             "pypy",
-            "../vrpベンチマーク_コード共有用/vrp_classical/code/main_tw.py",
+            "CNSsolver_20230602_v2303/vrp_classical/code/main_tw.py",
             "-i",
             os.path.abspath(file_path["input_file_path"]),
             "-d",
@@ -190,8 +172,19 @@ def CNSsolver(instance_name):
             # "-l" #1.20.2022
             # "-multithread", "0"
             # "-to", str(elapsed_time)
-        ]
+            "ls",
+            "-l",
+        ]  # , text=True
     )
+    # 標準出力をbytes型で受け取るには下記のコードを追加する
+    # (['ls', '-l'])
+    # 上記にtext=Trueを付けるとstr型になる
+
+    # save std_out as txt file
+    with open(
+        f"results/simulation/{cust_name}/{instance_name}_log_CARG.txt", "wb"
+    ) as file:
+        file.write(std_out)
 
     # %% [markdown]
     # ### Extract Results
@@ -338,13 +331,9 @@ if __name__ == "__main__":
                 if extension == ".txt":
                     INSTANCE_NAMES.append(name_without_extension)
         for ins in INSTANCE_NAMES:
-            # TODO check the definition of input
-            if check_exists(direct, ins) == True:
-                continue
-            else:
-                # 各dfの初期化
-                instance_df = readTestdata(ins)
-                distance_df = makeDistance(instance_df, ins)
-                input_df = makeInput(instance_df, ins)
-                conf_df = makeConfig(ins)
-                CNSsolver(ins)
+            # 各dfの初期化
+            instance_df = readTestdata(ins)
+            distance_df = makeDistance(instance_df, ins)
+            input_df = makeInput(instance_df, ins)
+            conf_df = makeConfig(ins)
+            CNSsolver(cust, ins)
