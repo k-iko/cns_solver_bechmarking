@@ -270,9 +270,10 @@ def ORtools(instance_name, cust_name):
 
     # log_searchの内容をtxtファイルに保存する
     with open(
-        f"/results/simulation/{cust_name}/{instance_name}_log_ortools.txt", "wb"
+        f"../results/simulation/{cust_name}/{instance_name}_log_ortools.txt", "wb"
     ) as file:
         file.write(log_search_content)
+
     # %%
     # Solve the problem.
     start_time = time.time()
