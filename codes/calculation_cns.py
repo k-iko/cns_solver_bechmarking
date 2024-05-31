@@ -28,9 +28,9 @@ def check_exists(directory, partial_name):
 
 # # %% make instance list
 # # RESULT_DIR_PATH = 'result/100cust'
-# DATA_DIR_PATH = "DATA/cust_data/400cust"
+# SAVE_DIR_PATH = "DATA/cust_data/400cust"
 # INSTANCE_NAMES = ["R2_4_9"]
-# # for file_name in os.listdir(DATA_DIR_PATH):
+# # for file_name in os.listdir(SAVE_DIR_PATH):
 # #     if file_name.endswith('.txt'):
 # #         name_without_extension, extension = os.path.splitext(file_name)
 # #         if extension == '.txt':
@@ -66,7 +66,7 @@ def readTestdata(instance_name):
     fig.show()
     # %%
     # save
-    img_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}.png")
+    img_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}.png")
     fig.write_image(img_file_path)
     return instance_df
 
@@ -88,7 +88,7 @@ def makeDistance(instance_df, instance_name):
     distance_df["KM"] = (distance_df["METERS"] / 1000).astype(int)
     distance_df.head()
     # save
-    distance_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}_dist.csv")
+    distance_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}_dist.csv")
     file_path["distance_file_path"] = distance_file_path
     distance_df = distance_df[["START", "END", "METERS"]]
     distance_df.to_csv(distance_file_path, index=False, header=False)
@@ -116,7 +116,7 @@ def makeInput(instance_df, instance_name):
 
     # %%
     # save
-    input_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}_input.csv")
+    input_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}_input.csv")
     input_df.to_csv(input_file_path, index=False)
     file_path["input_file_path"] = input_file_path
     return input_df
@@ -124,12 +124,12 @@ def makeInput(instance_df, instance_name):
 
 # make other cofig data
 def makeConfig(instance_name):
-    instance_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}.txt")
+    instance_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}.txt")
     conf_df = pd.read_csv(
         instance_file_path, skiprows=3, nrows=1, delim_whitespace=True, header=0
     ).T
     # save
-    conf_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}_conf.csv")
+    conf_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}_conf.csv")
     conf_df.to_csv(conf_file_path, header=False)
     file_path[conf_file_path] = conf_file_path
     return conf_df
@@ -141,12 +141,12 @@ def CNSsolver(instance_name):
     time_df = distance_df[["START", "END", "METERS"]]
     time_df["HRS"] = time_df["METERS"] / (60 * 1000)
     # save
-    time_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}_time.csv")
+    time_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}_time.csv")
     time_df = time_df[["START", "END", "HRS"]]
     time_df.to_csv(time_file_path, index=False, header=False)
 
     # make output data
-    output_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}_output_CARG.csv")
+    output_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}_output_CARG.csv")
     start_time = input_df["FROM TIME"].min()
     end_time = input_df["TO TIME"].max()
     vehicle_num = conf_df.loc["NUMBER", 0]
@@ -154,7 +154,7 @@ def CNSsolver(instance_name):
     # 元のパス
     original_path = "../simu_ortools"
     # 追加するパス
-    inserted_paths = [DATA_DIR_PATH, f"{instance_name}_result_ortools.csv"]
+    inserted_paths = [SAVE_DIR_PATH, f"{instance_name}_result_ortools.csv"]
     # パスに複数のパスを追加
     elapsed_time_file_path = original_path
     for path in inserted_paths:
@@ -231,7 +231,7 @@ def CNSsolver(instance_name):
 
     # %%
     # save
-    result_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}_result_CARG.csv")
+    result_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}_result_CARG.csv")
     result_df.to_csv(result_file_path, header=False)
 
     # %% [markdown]
@@ -321,7 +321,7 @@ def CNSsolver(instance_name):
 
     # %%
     # save
-    img_file_path = os.path.join(DATA_DIR_PATH, f"{instance_name}_route_CARG.png")
+    img_file_path = os.path.join(SAVE_DIR_PATH, f"{instance_name}_route_CARG.png")
     fig.write_image(img_file_path)
     result = "CNSsolver"
     return result
@@ -330,14 +330,15 @@ def CNSsolver(instance_name):
 if __name__ == "__main__":
     for cust in num_cust:
         DATA_DIR_PATH = f"data/cust_data/{cust}/total"
-        # SAVE_DIR_PATH = f"results/simulation/{cust}"
+        SAVE_DIR_PATH = f"results/simulation/{cust}"
         INSTANCE_NAMES = []
-        for file_name in os.listdir(DATA_DIR_PATH):
+        for file_name in os.listdir(SAVE_DIR_PATH):
             if file_name.endswith(".txt"):
                 name_without_extension, extension = os.path.splitext(file_name)
                 if extension == ".txt":
                     INSTANCE_NAMES.append(name_without_extension)
         for ins in INSTANCE_NAMES:
+            # TODO check the definition of input
             if check_exists(direct, ins) == True:
                 continue
             else:
