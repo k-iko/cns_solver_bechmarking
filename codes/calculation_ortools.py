@@ -117,33 +117,6 @@ def makeConfig(instance_name):
     return conf_df
 
 
-# define the function of plotting routes
-"""
-def draw_solution(data, manager, routing, solution, fig_name='output.png'):
-    G = nx.DiGraph()
-    nodes = data['nodes']
-    G.add_nodes_from([node['name'] for node in nodes])
-    for vehicle_id in range(data['num_vehicles']):
-        # 各日（「各トラック」と対応）のルートを描画
-        index = routing.Start(vehicle_id)
-        while not routing.IsEnd(index):
-            previous_node_index = manager.IndexToNode(index)
-            index = solution.Value(routing.NextVar(index))
-            node_index = manager.IndexToNode(index)
-            G.add_edge(
-                nodes[previous_node_index]['name'],
-                nodes[node_index]['name'],
-                color=data['colors'][vehicle_id])
-    pos = {
-        node['name']: node['coord'] for node in data['nodes']
-    }
-    edge_color = [edge['color'] for edge in G.edges.values()]
-    nx.draw_networkx(G, pos=pos, arrowsize=15, edge_color=edge_color, node_color='c')
-    plt.savefig(fig_name)
-    print(f'Result: {fig_name}')]
-"""
-
-
 # define solver of or tools
 def ORtools(instance_name, cust_name):
     # %% [markdown]
@@ -351,16 +324,6 @@ def ORtools(instance_name, cust_name):
             line += "\n"
             f.write(line)
 
-    # %%
-    result_df
-
-    # %% [markdown]
-    # ### Plot Route
-    """
-    solution = routing.SolveWithParameters(search_parameters)
-    if solution:
-        draw_solution(data, manager, routing, solution)
-    """
     # %%
     # plot routes
     vehicle_num = int(result_df.loc["TOTAL_NUMBER_OF VEHICLES", 0])
