@@ -328,3 +328,4 @@ if __name__ == "__main__":
             input_df = makeInput(instance_df, ins)
             conf_df = makeConfig(ins)
             CNSsolver(cust, ins)
+        os.system("mv *best0.txt results/cns_ini_value/" + cust)
