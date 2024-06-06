@@ -5,6 +5,14 @@ set -e
 VENV_DIR=".venv"
 REQUIREMENTS_FILE="requirements.txt"
 
+# 仮想環境の初期化
+# .venvフォルダを削除する
+if [ -d "$VENV_DIR" ]; then
+    echo ".venvフォルダが見つかりました。削除します。"
+    rm -rf "$VENV_DIR"
+    echo ".venvフォルダを削除しました。"
+fi
+
 # .venvフォルダが存在するか確認
 if [ -d "$VENV_DIR" ]; then
     echo ".venvフォルダが見つかりました。仮想環境を有効にします。"
