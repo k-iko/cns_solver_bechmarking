@@ -25,14 +25,13 @@ else
     fi
 fi
 
-# cnssolverで最適化計算を実行
-python codes/calculation_cns.py
-#TODO: 初期解出力場所および移動先の確認、指定 
-mv simu_cns/*.txt simu_cns/ini_result
-#TODO:logの出力先の指定
-
 # ortoolsで最適化計算を実行
 python codes/calculation_ortools.py
+echo "ortoolsで最適化計算を実行しました。"
+
+# cnssolverで最適化計算を実行
+python codes/calculation_cns.py 
+echo "cns_solverで最適化計算を実行しました。"
 
 # ソルバーごとの計算結果および最適化解との比較(総距離、台数削減、計算時間)を実行
 python codes/compare_results.py
