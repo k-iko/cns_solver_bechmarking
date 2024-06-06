@@ -339,4 +339,6 @@ if __name__ == "__main__":
             print(ins+ ' done')
             count += 1
             print(str(count) + '/' + str(length))
+            mv *best0.txt results/cns_ini_value/ins
+
     print("case closed")
