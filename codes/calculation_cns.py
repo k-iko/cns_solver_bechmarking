@@ -133,16 +133,7 @@ def CNSsolver(cust_name, instance_name):
     end_time = input_df["TO TIME"].max()
     vehicle_num = conf_df.loc["NUMBER", 0]
     capacity = conf_df.loc["CAPACITY", 0]
-    # 元のパス
-    original_path = "../simu_ortools"
-    # 追加するパス
-    inserted_paths = [SAVE_DIR_PATH, f"{instance_name}_result_ortools.csv"]
-    # パスに複数のパスを追加
-    elapsed_time_file_path = original_path
-    for path in inserted_paths:
-        elapsed_time_file_path = os.path.join(elapsed_time_file_path, path)
-    ortools_result_df = pd.read_csv(elapsed_time_file_path, header=None)
-    elapsed_time = ortools_result_df.iloc[2, 1]
+
     std_out = subprocess.check_output(
         [
             "pypy",
@@ -325,7 +316,7 @@ if __name__ == "__main__":
         DATA_DIR_PATH = f"data/cust_data/{cust}/total"
         SAVE_DIR_PATH = f"results/simulation/{cust}"
         INSTANCE_NAMES = []
-        for file_name in os.listdir(SAVE_DIR_PATH):
+        for file_name in os.listdir(DATA_DIR_PATH):
             if file_name.endswith(".txt"):
                 name_without_extension, extension = os.path.splitext(file_name)
                 if extension == ".txt":
