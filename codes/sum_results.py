@@ -12,8 +12,10 @@ GROUP_NAMES = ["total", "c", "r", "rc"]
 
 def make_list(group_name, cust_name):
     CUST_DIR_PATH = f"data/cust_data/{cust_name}/{group_name}"
+    file_names = os.listdir(CUST_DIR_PATH)
+    file_names.sort()
     INSTANCE_NAMES = []
-    for file_name in os.listdir(CUST_DIR_PATH):
+    for file_name in file_names:
         if file_name.endswith(".txt"):
             name_without_extension, extension = os.path.splitext(file_name)
             if (

@@ -93,9 +93,11 @@ def compare_results(instance_name, cust_name):
 
 if __name__ == "__main__":
     for cust in num_cust:
-        # DATA_DIR_PATH = f"results/simulation/{cust}"
+        DATA_DIR_PATH = f"results/simulation/{cust}"
+        file_names = os.listdir(DATA_DIR_PATH)
+        file_names.sort()
         INSTANCE_NAMES = []
-        for file_name in os.listdir(f"results/simulation/{cust}"):
+        for file_name in file_names:
             if file_name.endswith("_output_CARG.csv"):
                 name_without_extension = file_name.replace("_output_CARG.csv", "")
                 INSTANCE_NAMES.append(name_without_extension)
