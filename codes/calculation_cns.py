@@ -315,8 +315,10 @@ if __name__ == "__main__":
     for cust in num_cust:
         DATA_DIR_PATH = f"data/cust_data/{cust}/total"
         SAVE_DIR_PATH = f"results/simulation/{cust}"
+        file_names = os.listdir(DATA_DIR_PATH)
+        file_names.sort()
         INSTANCE_NAMES = []
-        for file_name in os.listdir(DATA_DIR_PATH):
+        for file_name in file_names:
             if file_name.endswith(".txt"):
                 name_without_extension, extension = os.path.splitext(file_name)
                 if extension == ".txt":
@@ -327,5 +329,4 @@ if __name__ == "__main__":
             distance_df = makeDistance(instance_df, ins)
             input_df = makeInput(instance_df, ins)
             conf_df = makeConfig(ins)
-            CNSsolver(cust, ins)
         os.system("mv *best0.txt results/cns_ini_value/" + cust)
