@@ -5,6 +5,14 @@ set -e
 VENV_DIR=".venv"
 REQUIREMENTS_FILE="requirements.txt"
 
+# 仮想環境の初期化
+# .venvフォルダを削除する
+if [ -d "$VENV_DIR" ]; then
+    echo ".venvフォルダが見つかりました。削除します。"
+    rm -rf "$VENV_DIR"
+    echo ".venvフォルダを削除しました。"
+fi
+
 # .venvフォルダが存在するか確認
 if [ -d "$VENV_DIR" ]; then
     echo ".venvフォルダが見つかりました。仮想環境を有効にします。"
@@ -25,14 +33,13 @@ else
     fi
 fi
 
-# cnssolverで最適化計算を実行
-python codes/calculation_cns.py
-#TODO: 初期解出力場所および移動先の確認、指定 
-mv simu_cns/*.txt simu_cns/ini_result
-#TODO:logの出力先の指定
-
 # ortoolsで最適化計算を実行
 python codes/calculation_ortools.py
+echo "ortoolsで最適化計算を実行しました。"
+
+# cnssolverで最適化計算を実行
+python codes/calculation_cns.py 
+echo "cns_solverで最適化計算を実行しました。"
 
 # ソルバーごとの計算結果および最適化解との比較(総距離、台数削減、計算時間)を実行
 python codes/compare_results.py

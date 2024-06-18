@@ -382,8 +382,10 @@ if __name__ == "__main__":
     for cust in num_cust:
         DATA_DIR_PATH = f"data/cust_data/{cust}/total"
         SAVE_DIR_PATH = f"results/simulation/{cust}"
+        file_names = os.listdir(DATA_DIR_PATH)
+        file_names.sort()
         INSTANCE_NAMES = []
-        for file_name in os.listdir(DATA_DIR_PATH):
+        for file_name in file_names:
             if file_name.endswith(".txt"):
                 name_without_extension, extension = os.path.splitext(file_name)
                 if extension == ".txt":
