@@ -3214,6 +3214,7 @@ def read_customers(filename,starttime,argvs):
 			rejectve_file = csv.reader(f, delimiter=",", quotechar='"')
 			for row in rejectve_file:
 				if row[0]!="CUST NO.":
+					# 立寄不可車両が複数ある場合にも対応出来るように変更
 					rejectve_dict[row[0]]=[int(x) for i in range(1,len(row)) for x in row[i].split(',') if x]
 
 	depotservt_dict={}
@@ -31686,7 +31687,7 @@ def generate_inputfile(filename,vehicles,lastc_flag,argvs):
 #def generate_routefile(filename,customers,vehicles,insfilename,lastc_flag):
 def generate_routefile(filename,vehicles,lastc_flag,argvs):
 	if rank==0:
-		with open(filename,'w') as f:
+1		with open(filename,'w') as f:
 			writecsv=csv.writer(f,lineterminator='\n')
 			olist=[]
 			olist+=["route#"]
