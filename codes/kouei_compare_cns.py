@@ -10,8 +10,6 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from itertools import permutations
-from ortools.constraint_solver import routing_enums_pb2
-from ortools.constraint_solver import pywrapcp
 
 # 作業ディレクトリをスクリプトのあるディレクトリに変更
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
