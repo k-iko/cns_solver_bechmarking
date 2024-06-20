@@ -3211,10 +3211,10 @@ def read_customers(filename,starttime,argvs):
 	rejectve_dict={}
 	if argvs.rejectve_file != None:
 		with open(argvs.rejectve_file, "r") as f:
-			rejectve_file = csv.reader(f, delimiter=",", quotechar='"', )
+			rejectve_file = csv.reader(f, delimiter=",", quotechar='"')
 			for row in rejectve_file:
 				if row[0]!="CUST NO.":
-					rejectve_dict[row[0]]=[int(row[i]) for i in range(1,len(row))]
+					rejectve_dict[row[0]]=[int(x) for i in range(1,len(row)) for x in row[i].split(',') if x]
 
 	depotservt_dict={}
 	if argvs.multitripc_file != None:
