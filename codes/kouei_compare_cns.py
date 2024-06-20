@@ -326,3 +326,41 @@ with open(
     os.path.join(save_dir_path, f"cns_solver_{instance_name}_log.txt"), "wb"
 ) as file:
     file.write(std_out)
+
+# Extract Results
+result_df = {}
+# extract results from detail output file
+detail_output_file_path = f'{output_file_path}.detail.csv'
+with open(detail_output_file_path, 'r') as f:
+    lines = f.readlines()
+for l in lines:
+    if 'TOTALCOST,' in l:
+        result_df['TOTALCOST'] =\
+            float(l.split(',')[1].replace('\n', ''))/1000
+
+# %%
+# extract results from std output
+pat = re.compile(r"=====.*?=====")
+texts = std_out.decode().split('\n')
+texts = [t for t in texts if pat.match(t)]
+result_row = texts.index('='*39)
+texts = texts[result_row:]
+pat = re.compile(r"[\d\.]+")
+result_cols = [
+    'TOTAL_NUMBER_OF VEHICLES',
+    'CONSTRUCTION_TIME',
+    'IMPROVEMENT_TIME']
+for c in result_cols:
+    for t in texts:
+        if c in t:
+            result_df[c] = float(pat.findall(t)[0])
+result_df['ELAPSED_TIME'] =\
+    result_df['CONSTRUCTION_TIME']+result_df['IMPROVEMENT_TIME']
+
+result_df = pd.Series(result_df).to_frame()
+
+# save
+result_file_path = os.path.join(
+    save_dir_path, f'cns_solver_{instance_name}_result.csv'
+)
+result_df.to_csv(result_file_path, header=False)
