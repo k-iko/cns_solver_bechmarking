@@ -347,7 +347,7 @@ result_row = texts.index('='*39)
 texts = texts[result_row:]
 pat = re.compile(r"[\d\.]+")
 result_cols = [
-    'TOTAL_NUMBER_OF VEHICLES',
+    'TOTAL_NUMBER_OF_VEHICLES',
     'CONSTRUCTION_TIME',
     'IMPROVEMENT_TIME']
 for c in result_cols:
