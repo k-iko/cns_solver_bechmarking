@@ -31687,7 +31687,7 @@ def generate_inputfile(filename,vehicles,lastc_flag,argvs):
 #def generate_routefile(filename,customers,vehicles,insfilename,lastc_flag):
 def generate_routefile(filename,vehicles,lastc_flag,argvs):
 	if rank==0:
-1		with open(filename,'w') as f:
+		with open(filename,'w') as f:
 			writecsv=csv.writer(f,lineterminator='\n')
 			olist=[]
 			olist+=["route#"]
@@ -37683,7 +37683,9 @@ def main():
 
 	#初期解をファイルに書き出し output initial solution to file
 	##generate_resultfile("results/"+fpre+"-best0.txt",custs3,vehs,argvs.inputfile,argvs.lastc_flag)
-	generate_resultfile(fpre+"-best0.txt",custs3,vehs,argvs.inputfile,argvs.lastc_flag,argvs)
+	ini_output_dir = os.path.dirname(argvs.outputfile)
+	ini_output_filename = os.path.join(ini_output_dir, fpre+"-best0.txt")
+	generate_resultfile(ini_output_filename,custs3,vehs,argvs.inputfile,argvs.lastc_flag,argvs)
 
 
 	# relocate,inswap,exchange,cross,merge
