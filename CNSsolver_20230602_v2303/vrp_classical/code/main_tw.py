@@ -37804,7 +37804,7 @@ def main():
 		sLogBuf += " ".join(list(map(str,sLog))) + "\n"
 
 	if argvs.decr_vnum==True: ##20180611 -rv
-		sLog = ["===== TOTAL_NUMBER_OF VEHICLES: ",vidx," ====="]
+		sLog = ["===== TOTAL_NUMBER_OF_VEHICLES: ",vidx," ====="]
 		sLogBuf += " ".join(list(map(str,sLog))) + "\n"
 	sLogBuf += "\n"
 	if argvs.initfile==None and argvs.loaddivide_initfile==None:
