@@ -20,7 +20,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 instance_name = "0530"
 data_dir_path = "../tests/kouei_data/検証用データ1/0530データ-20240610-135109304-TES1EDI001-TES1AP001"
 save_dir_path = f"../tests/kouei_data_test/{instance_name}"
-request_data_path = "../tests/kouei_data/検証用データ1/20240530元ネタ.csv"
+request_data_path = f"../tests/kouei_data/検証用データ1/2024{instance_name}元ネタ.csv"
 
 # # ディレクトリの存在確認
 # directory_path = save_dir_path
@@ -292,7 +292,7 @@ std_out = subprocess.check_output(
         "-t",
         time_file_path,
         "-o",
-        save_dir_path,
+        output_file_path,
         "-v",
         str(40),
         "-vs",
