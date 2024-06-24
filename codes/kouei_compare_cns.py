@@ -10,6 +10,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from itertools import permutations
+import chardet
 
 # 作業ディレクトリをスクリプトのあるディレクトリに変更
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -73,7 +74,21 @@ input_df = pd.read_csv(kouei_input_file_path)
 input_df["FROM TIME"] = "04:00"
 input_df["TO TIME"] = "16:00"
 
-request_df = pd.read_csv(request_data_path, encoding="shift-jis")
+# ファイルのエンコーディングを確認する
+with open(request_data_path, "rb") as f:
+    searched_encoding = chardet.detect(f.read())
+    detected_encoding = searched_encoding["encoding"]
+if detected_encoding is None:
+    possible_encodings = ["shift-jis", "cp932", "utf-8", "latin1"]
+    for encoding in possible_encodings:
+        try:
+            request_df = pd.read_csv(request_data_path, encoding=encoding)
+            break  # 成功した場合ループを終了
+        except Exception as e:
+            pass
+            # print(f"Error with encoding {encoding}: {e}")
+# request_df = pd.read_csv(request_data_path, encoding='cp932')
+
 
 # 重複を削除して届先IDごとのユニークな値をリストとして取得
 unique_dest_df = request_df.drop_duplicates(subset=["届先ID"])["オーダー重量"]
@@ -330,37 +345,32 @@ with open(
 # Extract Results
 result_df = {}
 # extract results from detail output file
-detail_output_file_path = f'{output_file_path}.detail.csv'
-with open(detail_output_file_path, 'r') as f:
+detail_output_file_path = f"{output_file_path}.detail.csv"
+with open(detail_output_file_path, "r") as f:
     lines = f.readlines()
 for l in lines:
-    if 'TOTALCOST,' in l:
-        result_df['TOTALCOST'] =\
-            float(l.split(',')[1].replace('\n', ''))/1000
+    if "TOTALCOST," in l:
+        result_df["TOTALCOST"] = float(l.split(",")[1].replace("\n", "")) / 1000
 
 # %%
 # extract results from std output
 pat = re.compile(r"=====.*?=====")
-texts = std_out.decode().split('\n')
+texts = std_out.decode().split("\n")
 texts = [t for t in texts if pat.match(t)]
-result_row = texts.index('='*39)
+result_row = texts.index("=" * 39)
 texts = texts[result_row:]
 pat = re.compile(r"[\d\.]+")
-result_cols = [
-    'TOTAL_NUMBER_OF_VEHICLES',
-    'CONSTRUCTION_TIME',
-    'IMPROVEMENT_TIME']
+result_cols = ["TOTAL_NUMBER_OF_VEHICLES", "CONSTRUCTION_TIME", "IMPROVEMENT_TIME"]
 for c in result_cols:
     for t in texts:
         if c in t:
             result_df[c] = float(pat.findall(t)[0])
-result_df['ELAPSED_TIME'] =\
-    result_df['CONSTRUCTION_TIME']+result_df['IMPROVEMENT_TIME']
+result_df["ELAPSED_TIME"] = (
+    result_df["CONSTRUCTION_TIME"] + result_df["IMPROVEMENT_TIME"]
+)
 
 result_df = pd.Series(result_df).to_frame()
 
 # save
-result_file_path = os.path.join(
-    save_dir_path, f'cns_solver_{instance_name}_result.csv'
-)
+result_file_path = os.path.join(save_dir_path, f"cns_solver_{instance_name}_result.csv")
 result_df.to_csv(result_file_path, header=False)
