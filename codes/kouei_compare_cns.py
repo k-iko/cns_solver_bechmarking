@@ -130,7 +130,7 @@ dist_file_path = os.path.join(
 dist_df.to_csv(dist_file_path, index=False)
 
 # 時間ファイルの作成
-time = FileFinder(data_dir_path, "dist").find_csv_file_and_return_path()
+time = FileFinder(data_dir_path, "time").find_csv_file_and_return_path()
 time_df = pd.read_csv(time, header=None)
 time_df.columns = [
     "CUST NO.",
@@ -188,7 +188,7 @@ vehicle_data_13t = processor.create_vehicle_data(12800, 5)
 vehicle_data_8t = processor.create_vehicle_data(7800, 10)
 vehicle_data_4t = processor.create_vehicle_data(3800, 10)
 vehicle_data_3t = processor.create_vehicle_data(2800, 15)
-# 優先して使用する車両の設定を変更するには入力の順番を変えるだけで良い、左にあるほど優先的に使用される
+# 優先して使用する車両の設定を変更するには入力の順番を変えるだけで良い、左にあるほど優先的に使用される?
 vs_df = processor.process_vehicle_data(
     vehicle_data_13t, vehicle_data_8t, vehicle_data_4t, vehicle_data_3t
 )
