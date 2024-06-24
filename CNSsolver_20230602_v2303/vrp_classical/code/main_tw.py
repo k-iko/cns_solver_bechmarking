@@ -3211,10 +3211,11 @@ def read_customers(filename,starttime,argvs):
 	rejectve_dict={}
 	if argvs.rejectve_file != None:
 		with open(argvs.rejectve_file, "r") as f:
-			rejectve_file = csv.reader(f, delimiter=",", quotechar='"', )
+			rejectve_file = csv.reader(f, delimiter=",", quotechar='"')
 			for row in rejectve_file:
 				if row[0]!="CUST NO.":
-					rejectve_dict[row[0]]=[int(row[i]) for i in range(1,len(row))]
+					# 立寄不可車両が複数ある場合にも対応出来るように変更
+					rejectve_dict[row[0]]=[int(x) for i in range(1,len(row)) for x in row[i].split(',') if x]
 
 	depotservt_dict={}
 	if argvs.multitripc_file != None:
@@ -37682,7 +37683,9 @@ def main():
 
 	#初期解をファイルに書き出し output initial solution to file
 	##generate_resultfile("results/"+fpre+"-best0.txt",custs3,vehs,argvs.inputfile,argvs.lastc_flag)
-	generate_resultfile(fpre+"-best0.txt",custs3,vehs,argvs.inputfile,argvs.lastc_flag,argvs)
+	ini_output_dir = os.path.dirname(argvs.outputfile)
+	ini_output_filename = os.path.join(ini_output_dir, fpre+"-best0.txt")
+	generate_resultfile(ini_output_filename,custs3,vehs,argvs.inputfile,argvs.lastc_flag,argvs)
 
 
 	# relocate,inswap,exchange,cross,merge
@@ -37801,7 +37804,7 @@ def main():
 		sLogBuf += " ".join(list(map(str,sLog))) + "\n"
 
 	if argvs.decr_vnum==True: ##20180611 -rv
-		sLog = ["===== TOTAL_NUMBER_OF VEHICLES: ",vidx," ====="]
+		sLog = ["===== TOTAL_NUMBER_OF_VEHICLES: ",vidx," ====="]
 		sLogBuf += " ".join(list(map(str,sLog))) + "\n"
 	sLogBuf += "\n"
 	if argvs.initfile==None and argvs.loaddivide_initfile==None:
