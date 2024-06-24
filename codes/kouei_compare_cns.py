@@ -16,7 +16,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # パスの指定
 instance_name = "0530"
-data_dir_path = "../tests/kouei_data/検証用データ1/0530データ-20240610-135109304-TES1EDI001-TES1AP001"
+data_dir_path = f"../tests/kouei_data_test/kouei_data{instance_name}"
 save_dir_path = f"../tests/kouei_data_test/{instance_name}"
 request_data_path = f"../tests/kouei_data/検証用データ1/2024{instance_name}元ネタ.csv"
 
