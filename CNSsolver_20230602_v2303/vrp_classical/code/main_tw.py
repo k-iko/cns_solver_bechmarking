@@ -3214,8 +3214,9 @@ def read_customers(filename,starttime,argvs):
 			rejectve_file = csv.reader(f, delimiter=",", quotechar='"')
 			for row in rejectve_file:
 				if row[0]!="CUST NO.":
-					# 立寄不可車両が複数ある場合にも対応出来るように変更
-					rejectve_dict[row[0]]=[int(x) for i in range(1,len(row)) for x in row[i].split(',') if x]
+					# 空の文字列があると処理できないのでif row[i] != ''を追加
+					rejectve_dict[row[0]]=[int(row[i]) for i in range(1,len(row)) if row[i] != '']
+					# rejectve_dict[row[0]]=[int(x) for i in range(1,len(row)) for x in row[i].split(',') if x]
 
 	depotservt_dict={}
 	if argvs.multitripc_file != None:
