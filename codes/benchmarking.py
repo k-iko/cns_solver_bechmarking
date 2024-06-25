@@ -67,6 +67,7 @@ def ROC_TotalCost_graph(cust_name, rate_name, group_name):
         f"{cust_name}_{group_dict[group_name]}_{rate_dict[rate_name]}_result.csv",
     )
     data_df = pd.read_csv(data_file_path)
+    data_df = data_df.sort_values("case")
     x_data = data_df["case"]
     y_data = data_df["TOTALCOST"]
 
@@ -197,6 +198,7 @@ def Bar_graph(cust_name):
     CSV_DIR_PATH = f"results/statistics/{cust_name}/elapsed_time"
     data_file_path = os.path.join(CSV_DIR_PATH, f"{cust_name}_elapsed_time_result.csv")
     data_df = pd.read_csv(data_file_path)
+    data_df = data_df.sort_values("case")
     # ORToolsの計算時間
     fig1 = px.bar(
         data_df, x="case", y="ELAPSED_TIME_ORTools", title="Elapsed Time of ORTools"
@@ -218,6 +220,12 @@ def Bar_graph(cust_name):
 
 # タイトル表示
 st.title("Benchmarking")
+with st.expander("Summary", expanded=False):
+    st.write("data : https://www.sintef.no/projectweb/top/vrptw/100-customers/")
+    st.write("state of progress")
+    st.write("Done : 100cust, 200cust, 400cust, some cases in 600cust")
+    st.write("Backlog : other cases in 600cust, 800cust, 1000cust")
+
 
 with st.sidebar:
     # custをリスト作成
@@ -236,7 +244,7 @@ with st.sidebar:
     sel_rate = st.selectbox("select number of rate:", rate_list)
 
 st.write(f"selected cust : {sel_cust}")
-st.write(f"selected group : {sel_rate}")
+st.write(f"selected group : {sel_rate}", "※(Current Value) - (Reference Value)")
 
 group_list = ("Total", "Clustering", "Random", "Random Clustering")
 tab1, tab2, tab3, tab4 = st.tabs(group_list)
@@ -279,7 +287,8 @@ with tab1:
                 st.write(f"Image not found for {selected_case}: {carg_route_file_path}")
             if os.path.exists(ortools_route_file_path):
                 st.image(
-                    ortools_route_file_path, caption=f"ORTols Route for {selected_case}"
+                    ortools_route_file_path,
+                    caption=f"ORTools Route for {selected_case}",
                 )
             else:
                 st.write(f"Image not found for {selected_case}: {carg_route_file_path}")
