@@ -15,8 +15,9 @@ import chardet
 # 作業ディレクトリをスクリプトのあるディレクトリに変更
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-# パスの指定
-instance_name = "0530"
+# パス・変数の指定
+instance_name = "0531"
+s = 0  # s=0: 13t>8t>4t>3t, s=1: 3t>4t>8t>13t
 data_dir_path = f"../tests/kouei_data_test/kouei_data{instance_name}"
 save_dir_path = f"../tests/kouei_data_test/{instance_name}"
 request_data_path = f"../tests/kouei_data/検証用データ1/2024{instance_name}元ネタ.csv"
@@ -71,8 +72,8 @@ kouei_input_file_path = FileFinder(
     data_dir_path, "input"
 ).find_csv_file_and_return_path()
 input_df = pd.read_csv(kouei_input_file_path)
-input_df["FROM TIME"] = "04:00"
-input_df["TO TIME"] = "16:00"
+input_df.loc[input_df["CUST NO."] != 0, "FROM TIME"] = "04:00"
+input_df.loc[input_df["CUST NO."] != 0, "TO TIME"] = "16:00"
 
 # ファイルのエンコーディングを確認する
 with open(request_data_path, "rb") as f:
@@ -189,9 +190,19 @@ vehicle_data_8t = processor.create_vehicle_data(7800, 10)
 vehicle_data_4t = processor.create_vehicle_data(3800, 10)
 vehicle_data_3t = processor.create_vehicle_data(2800, 15)
 # 優先して使用する車両の設定を変更するには入力の順番を変えるだけで良い、左にあるほど優先的に使用される?
-vs_df = processor.process_vehicle_data(
-    vehicle_data_13t, vehicle_data_8t, vehicle_data_4t, vehicle_data_3t
-)
+if s == 0:
+    vs_df = processor.process_vehicle_data(
+        vehicle_data_13t, vehicle_data_8t, vehicle_data_4t, vehicle_data_3t
+    )
+else:
+    vs_df = processor.process_vehicle_data(
+        vehicle_data_3t, vehicle_data_4t, vehicle_data_8t, vehicle_data_13t
+    )
+# vs_df = processor.process_vehicle_data(
+#     (vehicle_data_13t, vehicle_data_8t, vehicle_data_4t, vehicle_data_3t)
+#     if s == 0
+#     else (vehicle_data_3t, vehicle_data_4t, vehicle_data_8t, vehicle_data_13t)
+# )
 
 # save
 vs_file_path = os.path.join(save_dir_path, f"request_cns_solver_{instance_name}_vs.csv")
@@ -275,6 +286,21 @@ rej_df["REJECT_VEHICLE"] = unique_dest_df["matched_vehicles"]
 rej_df.loc[rej_df["CUST NO."] == 0, "REJECT_VEHICLE"] = ""
 # rej_df = rej_df[rej_df["REJECT_VEHICLE"] != ""]
 
+# REJECT_VEHICLE内の要素を分割して新しい列を追加
+reject_vehicle_split = rej_df["REJECT_VEHICLE"].str.split(",", expand=True)
+reject_vehicle_split.columns = [
+    f"REJECT_VEHICLE_{i+1}" for i in range(reject_vehicle_split.shape[1])
+]
+
+# 元のDataFrameに追加
+rej_df = pd.concat([rej_df, reject_vehicle_split], axis=1)
+
+# df内の整形
+rej_df.drop(columns=["REJECT_VEHICLE"], inplace=True)
+new_columns = {0: "CUST NO.", 1: "REJECT_VEHICLE"}
+rej_df.columns = [new_columns.get(i, None) for i in range(len(rej_df.columns))]
+rej_df = rej_df[rej_df["REJECT_VEHICLE"].notna() & (rej_df["REJECT_VEHICLE"] != "")]
+
 # save
 rej_file_path = os.path.join(
     save_dir_path, f"request_cns_solver_{instance_name}_rej.csv"
@@ -325,6 +351,8 @@ std_out = subprocess.check_output(
         # "-dem", str(capacity),
         "-lpt",
         "hard",  # hard constraint on package weight v.s. vehicle capacity
+        "-tpt",
+        "hard",
         # "-avedistper", "10"
         # "-l" #1.20.2022
         # "-multithread", "0"
